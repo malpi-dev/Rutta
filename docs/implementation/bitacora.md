@@ -5,9 +5,9 @@
 
 ## Avance
 
-`█████▒░░░░░░░░` 5/14 fases terminadas (36 %)
+`██████░░░░░░░░` 6/14 fases terminadas (43 %)
 
-**Fase actual:** Fase 06 · Seguimiento del cliente (🚧 en progreso)
+**Fase actual:** ninguna — la siguiente es la Fase 07 · Entregas del repartidor
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -20,7 +20,7 @@
 | 03 | Dominio | `feat/fase-03-dominio` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 04 | Mapa y rutas | `feat/fase-04-mapa-y-rutas` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 05 | Modo demo | `feat/fase-05-modo-demo` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
-| 06 | Seguimiento del cliente | `feat/fase-06-seguimiento-cliente` | 🚧 En progreso | 2026-09-30 | — |
+| 06 | Seguimiento del cliente | `feat/fase-06-seguimiento-cliente` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 07 | Entregas del repartidor | `feat/fase-07-entregas-repartidor` | ⏳ Pendiente | — | — |
 | 08 | Ubicación del repartidor | `feat/fase-08-ubicacion-repartidor` | ⏳ Pendiente | — | — |
 | 09 | Backend Supabase | `feat/fase-09-backend-supabase` | ⏳ Pendiente | — | — |
@@ -63,6 +63,13 @@ Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 > - **Decisiones:** qué se decidió y por qué (también va a la tabla de abajo si cambia la definición o el plan).
 > - **Pendientes:** lo que quedó para otra fase (con el número de fase destino).
 
+### Fase 06 · Seguimiento del cliente — 2026-09-30
+- **Hecho:** eliminada la vista previa de desarrollo (pantalla, ruta `/dev/map`, botón y texto l10n); providers `order`, `orderEvents`, `isConnected`, `courierLocation`, `now`, `routeProgress` e `isCourierLocationStale`; widgets `OrderStatusChip`, `OrderCard`, `SectionHeader`, `StatusTimeline`, `ReconnectingBanner`, `statusLabel`; lista del cliente (Active/History, pull-to-refresh, carga/vacío/error); `OrderDetailScreen` con `TrackingMap` (marcador animado sobre la ruta, ruta recorrida/restante, recentrar), `TrackingPanel` (estado, ETA, distancia, aviso stale, repartidor, direcciones, ítems, total, línea de tiempo) y `OrderDetailSkeleton`; ids `order-card-<code>`, `order-status-headline`, `tracking-eta`, `tracking-recenter`, `settings-open`; tests del paso 8.
+- **Verificación:** `./tool/check.sh` en verde (184 tests). A mano en emulador Pixel_10_Pro, demo como cliente: lista, detalle de RT-1042 con recorrido completo (~1 min) en claro y oscuro, ETA/distancia bajando, *Delivered* al final con el pin desaparecido. No se grabó `screenrecord` (se revisaron capturas separadas); la fluidez de la animación no se midió en vídeo.
+- **PR:** ver historial de `main` (squash de `feat/fase-06-seguimiento-cliente`).
+- **Decisiones:** la fila de progreso usa dos textos (`tracking-eta` y `tracking-distance` con `distanceLeft` "{distance} left") en vez de `etaAndDistance`; se reutiliza `ordersEmptyTitle` en lugar de `noOrdersTitle`; `isCourierLocationStaleProvider` (bool) evita reconstruir el mapa cada segundo; la ruta recorrida se divide en la proyección sobre la ruta cuando el repartidor está fuera de ruta; la ubicación solo se observa si el pedido está en curso. En tests las pantallas altas (`physicalSize`) evitan que el `ListView` perezoso omita elementos (se ajustó `demo_flow_test`).
+- **Pendientes:** variante del repartidor del detalle (fase 07); el botón recentrar no persigue automáticamente al repartidor (según la fase); cuando el marcador sale de la vista el usuario debe pulsar recentrar.
+
 ### Fase 05 · Modo demo — 2026-09-30
 - **Hecho:** `DemoUsers` + `buildDemoWorld` (6 pedidos con rutas reales; Alex 5, Carlos 3); `DemoCourierSimulator`; `DemoStore` (reglas de `advance` iguales a la RPC, simulación del repartidor del cliente, `dispose`); `watchStore` (helper de streams con latencia); `MockOrdersRepository`, `MockTrackingRepository`, `MockDeviceLocationRepository`, `MockConnectionMonitor`; providers `demoStore`, repositorios por `AppMode` (live provisional con `UnimplementedError`) y casos de uso; selector de rol, botón `login-explore-demo`, `DemoBanner` en `RuttaApp`; listas provisionales con `myOrdersProvider`; textos l10n; tests del paso 7.
 - **Verificación:** `./tool/check.sh` en verde (167 tests). A mano en emulador Pixel_10_Pro **en modo avión**: login, *Explore demo*, cliente (5 pedidos, banner), *Exit demo*, repartidor (3 pedidos).
@@ -75,7 +82,7 @@ Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 - **Verificación:** `./tool/check.sh` en verde (142 tests). A mano en emulador Pixel_10_Pro: mapa claro (pines, ruta, repartidor), oscuro (filtro legible) y modo avión (aviso "Map unavailable", fondo neutro, pantalla usable).
 - **PR:** ver historial de `main` (squash de `feat/fase-04-mapa-y-rutas`).
 - **Decisiones:** `Routes.devMap` se excluye en `appRedirect` (si no, sin sesión redirigía al login); se añadieron `AppColors.markerContent`/`markerShadow` para no usar `Colors.white` fuera del tema; `PickupPin`/`DropoffPin` son envoltorios sobre `PlacePin`; `MapOptions` usa `initialCenter` cuando hay un solo punto; ignore justificado de `use_setters_to_change_properties` en `attach`. API de flutter_map 8.3.2 coincide con la fase. Sin capturas commiteadas.
-- **Pendientes:** el archivo SQL de rutas se rellena en la fase 09 (`--from-cache`); `DevMapPreviewScreen` se borra en la fase 06.
+- **Pendientes:** el archivo SQL de rutas se rellena en la fase 09 (`--from-cache`); `DevMapPreviewScreen` se borró en la fase 06.
 
 ### Fase 03 · Dominio — 2026-09-30
 - **Hecho:** `GeoPoint` y `geo.dart` (haversine, rumbo, longitud, `projectOntoRoute`, `pointAlongRoute`, `splitRoute`); `OrderStatus` con tabla de transiciones; entidades freezed `Place`, `OrderItem`, `Order`, `OrderStatusEvent`, `CourierLocation`, `DevicePosition`, `RouteProgress` (+ `LocationAccess`); puertos `OrdersRepository`, `ConnectionMonitor`, `TrackingRepository`, `DeviceLocationRepository`, `AuthRepository`; casos de uso `AvailableOrderActions`, `ComputeRouteProgress`, `ShouldSendLocation`; `buildOrderTimeline`; validadores de auth; `test/helpers/builders.dart`.
