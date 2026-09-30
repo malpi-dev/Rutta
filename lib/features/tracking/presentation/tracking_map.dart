@@ -158,7 +158,9 @@ class _TrackingMapState extends ConsumerState<TrackingMap>
         currentMeters != null &&
         onRoute &&
         _toMeters < currentMeters - _backwardsJumpMeters;
-    if (current == null || goesBackwards) {
+    // Reduced motion: place the marker without gliding.
+    final reduceMotion = MediaQuery.disableAnimationsOf(context);
+    if (current == null || goesBackwards || reduceMotion) {
       _fromPoint = _toPoint;
       _fromMeters = _toMeters;
       _fromOnRoute = _toOnRoute;

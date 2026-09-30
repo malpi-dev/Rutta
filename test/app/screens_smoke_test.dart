@@ -24,11 +24,14 @@ import 'package:rutta/features/tracking/domain/device_position.dart';
 import 'package:rutta/l10n/app_localizations.dart';
 
 import '../features/auth/presentation/auth_test_helpers.dart';
-import '../helpers/location_fakes.dart';
 import '../helpers/fake_rutta_map.dart';
+import '../helpers/location_fakes.dart';
 
-const _sizes = {'360x640': Size(360, 640), '411x891': Size(411, 891)};
-const _themes = {
+const Map<String, Size> _sizes = {
+  '360x640': Size(360, 640),
+  '411x891': Size(411, 891),
+};
+const Map<String, ThemePreference> _themes = {
   'light': ThemePreference.light,
   'dark': ThemePreference.dark,
 };
@@ -95,7 +98,10 @@ void main() {
           await tester.pumpAndSettle();
           expect(find.byKey(const Key('demo-banner')), findsOneWidget);
           expect(tester.takeException(), isNull, reason: 'Customer list');
-          await visit('Customer in transit', '/customer/orders/demo-order-1042');
+          await visit(
+            'Customer in transit',
+            '/customer/orders/demo-order-1042',
+          );
           await visit('Customer assigned', '/customer/orders/demo-order-1043');
           await visit('Customer delivered', '/customer/orders/demo-order-1038');
           await visit('Customer cancelled', '/customer/orders/demo-order-1031');

@@ -20,7 +20,10 @@ class FakeRuttaMap extends StatelessWidget {
           for (final m in props.markers)
             KeyedSubtree(key: Key('marker-${m.id}'), child: m.child),
           for (final p in props.polylines)
-            Text('polyline:${p.id}:${p.points.length}'),
+            // Debug text of the test double: not part of the a11y tree.
+            ExcludeSemantics(
+              child: Text('polyline:${p.id}:${p.points.length}'),
+            ),
         ],
       ),
     );

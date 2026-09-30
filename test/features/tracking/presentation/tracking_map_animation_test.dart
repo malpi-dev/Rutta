@@ -85,6 +85,19 @@ void main() {
     await tester.pumpWidget(const SizedBox());
   });
 
+  testWidgets('with disableAnimations the marker jumps to the new location', (
+    tester,
+  ) async {
+    tester.platformDispatcher.accessibilityFeaturesTestValue =
+        const FakeAccessibilityFeatures(disableAnimations: true);
+    addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
+    await pumpMap(tester);
+    await emit(tester, at(const GeoPoint(0, 0.001), 0));
+    await emit(tester, at(const GeoPoint(0, 0.011), 2));
+    expect(displayed().lng, closeTo(0.011, 1e-9));
+    await tester.pumpWidget(const SizedBox());
+  });
+
   testWidgets('follows the bends of the route instead of cutting corners', (
     tester,
   ) async {

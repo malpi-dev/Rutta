@@ -6,6 +6,7 @@ import 'package:rutta/core/map/rutta_map_provider.dart';
 import 'package:rutta/features/demo/data/demo_store.dart';
 import 'package:rutta/features/orders/data/mock_connection_monitor.dart';
 import 'package:rutta/features/orders/data/mock_orders_repository.dart';
+import 'package:rutta/features/orders/domain/connection_monitor.dart';
 import 'package:rutta/features/orders/domain/orders_repository.dart';
 import 'package:rutta/features/tracking/data/mock_device_location_repository.dart';
 import 'package:rutta/features/tracking/data/mock_tracking_repository.dart';
@@ -22,6 +23,7 @@ List<Override> screenOverrides(
   OrdersRepository? orders,
   TrackingRepository? tracking,
   DeviceLocationRepository? device,
+  ConnectionMonitor? connection,
 }) => [
   clockProvider.overrideWithValue(store.clock),
   ordersRepositoryProvider.overrideWithValue(
@@ -33,7 +35,9 @@ List<Override> screenOverrides(
   deviceLocationRepositoryProvider.overrideWithValue(
     device ?? MockDeviceLocationRepository(store),
   ),
-  connectionMonitorProvider.overrideWithValue(MockConnectionMonitor()),
+  connectionMonitorProvider.overrideWithValue(
+    connection ?? MockConnectionMonitor(),
+  ),
   ruttaMapBuilderProvider.overrideWithValue(FakeRuttaMap.new),
 ];
 

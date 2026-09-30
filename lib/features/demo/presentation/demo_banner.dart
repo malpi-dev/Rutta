@@ -38,6 +38,9 @@ class DemoBanner extends ConsumerWidget {
                 identifier: 'demo-exit',
                 child: TextButton(
                   key: const Key('demo-exit'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: scheme.onTertiaryContainer,
+                  ),
                   onPressed: () =>
                       ref.read(appModeControllerProvider.notifier).exitDemo(),
                   child: Text(l10n.exitDemo),
