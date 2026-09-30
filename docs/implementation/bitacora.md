@@ -5,9 +5,9 @@
 
 ## Avance
 
-`████████░░░░░░` 8/14 fases terminadas (57 %)
+`████████▒░░░░░` 8/14 fases terminadas (57 %)
 
-**Fase actual:** ninguna — la siguiente es la Fase 09 · Backend Supabase
+**Fase actual:** Fase 09 · Backend Supabase (en progreso)
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -23,7 +23,7 @@
 | 06 | Seguimiento del cliente | `feat/fase-06-seguimiento-cliente` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 07 | Entregas del repartidor | `feat/fase-07-entregas-repartidor` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 08 | Ubicación del repartidor | `feat/fase-08-ubicacion-repartidor` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
-| 09 | Backend Supabase | `feat/fase-09-backend-supabase` | ⏳ Pendiente | — | — |
+| 09 | Backend Supabase | `feat/fase-09-backend-supabase` | 🚧 En progreso | 2026-09-30 | — |
 | 10 | Auth | `feat/fase-10-auth` | ⏳ Pendiente | — | — |
 | 11 | Supabase y Realtime | `feat/fase-11-supabase-y-realtime` | ⏳ Pendiente | — | — |
 | 12 | Ajustes e identidad | `feat/fase-12-ajustes-e-identidad` | ⏳ Pendiente | — | — |
