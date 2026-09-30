@@ -5,9 +5,9 @@
 
 ## Avance
 
-`█████████░░░░░` 9/14 fases terminadas (64 %)
+`█████████▒░░░░` 9/14 fases terminadas (64 %)
 
-**Fase actual:** ninguna — la siguiente es la Fase 10 · Auth
+**Fase actual:** Fase 10 · Auth (en progreso)
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -24,7 +24,7 @@
 | 07 | Entregas del repartidor | `feat/fase-07-entregas-repartidor` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 08 | Ubicación del repartidor | `feat/fase-08-ubicacion-repartidor` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 09 | Backend Supabase | `feat/fase-09-backend-supabase` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
-| 10 | Auth | `feat/fase-10-auth` | ⏳ Pendiente | — | — |
+| 10 | Auth | `feat/fase-10-auth` | 🚧 En progreso | 2026-09-30 | — |
 | 11 | Supabase y Realtime | `feat/fase-11-supabase-y-realtime` | ⏳ Pendiente | — | — |
 | 12 | Ajustes e identidad | `feat/fase-12-ajustes-e-identidad` | ⏳ Pendiente | — | — |
 | 13 | Pulido y E2E | `feat/fase-13-pulido-y-e2e` | ⏳ Pendiente | — | — |
