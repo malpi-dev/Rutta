@@ -5,9 +5,9 @@
 
 ## Avance
 
-`████████▒░░░░░` 8/14 fases terminadas (57 %)
+`█████████░░░░░` 9/14 fases terminadas (64 %)
 
-**Fase actual:** Fase 09 · Backend Supabase (en progreso)
+**Fase actual:** ninguna — la siguiente es la Fase 10 · Auth
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -23,7 +23,7 @@
 | 06 | Seguimiento del cliente | `feat/fase-06-seguimiento-cliente` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 07 | Entregas del repartidor | `feat/fase-07-entregas-repartidor` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 08 | Ubicación del repartidor | `feat/fase-08-ubicacion-repartidor` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
-| 09 | Backend Supabase | `feat/fase-09-backend-supabase` | 🚧 En progreso | 2026-09-30 | — |
+| 09 | Backend Supabase | `feat/fase-09-backend-supabase` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 10 | Auth | `feat/fase-10-auth` | ⏳ Pendiente | — | — |
 | 11 | Supabase y Realtime | `feat/fase-11-supabase-y-realtime` | ⏳ Pendiente | — | — |
 | 12 | Ajustes e identidad | `feat/fase-12-ajustes-e-identidad` | ⏳ Pendiente | — | — |
@@ -62,6 +62,13 @@ Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 > - **PR:** enlace o número.
 > - **Decisiones:** qué se decidió y por qué (también va a la tabla de abajo si cambia la definición o el plan).
 > - **Pendientes:** lo que quedó para otra fase (con el número de fase destino).
+
+### Fase 09 · Backend Supabase — 2026-09-30
+- **Hecho:** `supabase/config.toml` (schema `rutta` expuesto, OTP de 6 dígitos, plantilla `otp.html` con `{{ .Token }}`, Realtime, seed); migración `20261005000000_rutta_init.sql` (4 tablas, índice de un pedido en curso por repartidor, `my_role`, `is_valid_transition`, triggers de guarda/historial/borrado de ubicación/hora del servidor, RPCs `ensure_profile`, `advance_order_status`, `admin_assign_order`, grants por columna, RLS con las 10 políticas comentadas, publicación de Realtime); `seed.sql` (3 usuarios, 8 pedidos, 25 eventos, 2 ubicaciones, rutas reales rellenadas con `fetch_routes.dart --from-cache`); `scripts/create_sample_orders.sql`; tests pgTAP `rls_test.sql` (29) y `business_test.sql` (25); job `database` en CI; `.env.json` local (fuera de git).
+- **Verificación:** `./tool/check.sh` en verde (234 tests); `supabase db reset` sin errores (8 pedidos, 25 eventos, 2 ubicaciones); `supabase test db` en verde (54 tests); `create_sample_orders.sql` ejecutado dos veces seguidas sin error; `curl` con la publishable key contra `rutta.orders` responde `42501 permission denied` (sin datos). Se detuvieron los contenedores de Agendo y Centavo con `supabase stop --project-id` (sin borrar datos).
+- **PR:** ver historial de `main` (squash de `feat/fase-09-backend-supabase`).
+- **Decisiones:** dos políticas de `courier_locations` (`locations_insert_courier` y `locations_update_courier`) en lugar de la única `locations_upsert_courier` de §7.2 (cada política es de un solo comando); no se crea `is_order_customer()` (las políticas usan `exists` sobre `orders`, sin recursión); en el seed y el script los eventos `assigned` llevan `changed_by = null` (lo asigna admin) y solo picked_up/in_transit/delivered llevan al repartidor; los tests que comprueban el CHECK de estado inserta la fila directamente (un `update` con estado inválido lo intercepta antes el trigger de guarda con `RUTTA_INVALID_TRANSITION`); en el job de CI se usa `actions/checkout@v7` (igual que el job de Flutter). `supabase init` no se ejecutó: `config.toml` parte del de Centavo con `project_id = "rutta"`.
+- **Pendientes:** el job `database` de CI solo se valida al abrir el PR; aplicar en remoto en la fase 14.
 
 ### Fase 08 · Ubicación del repartidor — 2026-09-30
 - **Hecho:** `GeolocatorApi` + `GeolocatorDeviceLocationRepository` (permisos, posiciones UTC, errores tipados); `Env.demoUsesRealGps` (`DEMO_REAL_GPS`); `currentUserIdProvider`/`currentRoleProvider` y selección del repositorio de dispositivo por modo; `ensureLocationAccess` + hoja de permisos (denied / deniedForever / serviceDisabled, recheck al volver de ajustes); `LocationPublisherEngine` (throttling vía `ShouldSendLocation`, pausa manual y por ciclo de vida, wakelock, errores) + `LocationSharingState`, `ScreenAwake`, providers (`activeDelivery`, `locationPublisher`, `locationSharingState`); `SharingIndicator` con todos sus estados; `displayedCourierLocationProvider` y `routeProgressProvider(orderId, role)` (marcador propio y ETA del repartidor); `tool/emulator_drive.dart`; textos l10n; tests de los 4 archivos del paso 7.
@@ -145,6 +152,7 @@ Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 | 2026-09-30 | Plan | Variables de entorno: `.env.example` (comentado, exigido por el `CLAUDE.md`) **y** `.env.example.json` (plantilla lista para copiar a `.env.json`). | `--dart-define-from-file` necesita JSON, que no admite comentarios. |
 | 2026-09-30 | Plan | Decisiones abiertas de §17 resueltas: mapa oscuro con `darkModeTileBuilder` sobre OSM (sin API key); firma con keystore propio con respaldo a la clave debug si no existe (igual que Centavo); código generado **no** se commitea; Maestro **no** corre en CI. | Propuestas de la propia definición y del precedente de Centavo. |
 | 2026-09-30 | Plan | Scripts de desarrollo (no se usan en la app ni en CI): `tool/emulator_drive.dart` (GPS del emulador por la ruta, fase 08), el flag `--dart-define=DEMO_REAL_GPS=true` (el repartidor del demo usa el GPS real, fase 08), `tool/simulate_courier.sh` (mueve a un repartidor en Supabase local con `psql`, fase 11) y `tool/get_otp.sh` (código OTP de cuentas de prueba en remoto con la secret key, fase 14). | Permiten probar el tracking en vivo con un solo emulador y crear cuentas de prueba sin SMTP propio. |
+| 2026-09-30 | 09 | Dos políticas de `courier_locations` (`locations_insert_courier`, `locations_update_courier`) en vez de `locations_upsert_courier`; no existe `is_order_customer()`. | Una política por comando en Postgres; `exists` sobre `orders` evita recursión. |
 
 ## Bloqueos
 
