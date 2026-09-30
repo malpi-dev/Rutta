@@ -5,9 +5,9 @@
 
 ## Avance
 
-`███░░░░░░░░░░░` 3/14 fases terminadas (21 %)
+`███▒░░░░░░░░░░` 3/14 fases terminadas (21 %)
 
-**Fase actual:** ninguna — la siguiente es la Fase 04 · Mapa y rutas
+**Fase actual:** Fase 04 · Mapa y rutas (🚧 en progreso)
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -18,7 +18,7 @@
 | 01 | Andamiaje | `feat/fase-01-andamiaje` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 02 | Core | `feat/fase-02-core` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 03 | Dominio | `feat/fase-03-dominio` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
-| 04 | Mapa y rutas | `feat/fase-04-mapa-y-rutas` | ⏳ Pendiente | — | — |
+| 04 | Mapa y rutas | `feat/fase-04-mapa-y-rutas` | 🚧 En progreso | 2026-09-30 | — |
 | 05 | Modo demo | `feat/fase-05-modo-demo` | ⏳ Pendiente | — | — |
 | 06 | Seguimiento del cliente | `feat/fase-06-seguimiento-cliente` | ⏳ Pendiente | — | — |
 | 07 | Entregas del repartidor | `feat/fase-07-entregas-repartidor` | ⏳ Pendiente | — | — |
