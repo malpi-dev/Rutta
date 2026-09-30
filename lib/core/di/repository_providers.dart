@@ -4,6 +4,7 @@ import 'package:rutta/core/di/app_mode_provider.dart';
 import 'package:rutta/core/domain/app_mode.dart';
 import 'package:rutta/core/domain/clock.dart';
 import 'package:rutta/core/domain/user_role.dart';
+import 'package:rutta/core/supabase/realtime_status_hub.dart';
 import 'package:rutta/core/supabase/supabase_client_provider.dart';
 import 'package:rutta/features/auth/data/supabase_auth_repository.dart';
 import 'package:rutta/features/auth/domain/auth_repository.dart';
@@ -12,6 +13,8 @@ import 'package:rutta/features/auth/presentation/session_providers.dart';
 import 'package:rutta/features/demo/data/demo_store.dart';
 import 'package:rutta/features/orders/data/mock_connection_monitor.dart';
 import 'package:rutta/features/orders/data/mock_orders_repository.dart';
+import 'package:rutta/features/orders/data/supabase_connection_monitor.dart';
+import 'package:rutta/features/orders/data/supabase_orders_repository.dart';
 import 'package:rutta/features/orders/domain/available_order_actions.dart';
 import 'package:rutta/features/orders/domain/connection_monitor.dart';
 import 'package:rutta/features/orders/domain/orders_repository.dart';
@@ -20,6 +23,7 @@ import 'package:rutta/features/settings/domain/settings_repository.dart';
 import 'package:rutta/features/tracking/data/geolocator_device_location_repository.dart';
 import 'package:rutta/features/tracking/data/mock_device_location_repository.dart';
 import 'package:rutta/features/tracking/data/mock_tracking_repository.dart';
+import 'package:rutta/features/tracking/data/supabase_tracking_repository.dart';
 import 'package:rutta/features/tracking/domain/compute_route_progress.dart';
 import 'package:rutta/features/tracking/domain/device_location_repository.dart';
 import 'package:rutta/features/tracking/domain/should_send_location.dart';
@@ -59,13 +63,21 @@ DemoStore demoStore(Ref ref) {
   return store;
 }
 
-// The live branches are temporary and unreachable: without a session the
-// router sends the user to the login screen.
+@Riverpod(keepAlive: true)
+RealtimeStatusHub realtimeStatusHub(Ref ref) {
+  final hub = RealtimeStatusHub();
+  ref.onDispose(hub.dispose);
+  return hub;
+}
+
 @Riverpod(keepAlive: true)
 OrdersRepository ordersRepository(Ref ref) =>
     switch (ref.watch(appModeControllerProvider)) {
-      AppModeLive() => throw UnimplementedError(
-        'SupabaseOrdersRepository arrives in phase 11',
+      AppModeLive() => SupabaseOrdersRepository(
+        ref.watch(supabaseClientProvider),
+        ref.watch(realtimeStatusHubProvider),
+        userId: ref.watch(currentUserIdProvider) ?? '',
+        role: ref.watch(currentRoleProvider) ?? UserRole.customer,
       ),
       AppModeDemo() => MockOrdersRepository(ref.watch(demoStoreProvider)),
     };
@@ -73,8 +85,9 @@ OrdersRepository ordersRepository(Ref ref) =>
 @Riverpod(keepAlive: true)
 TrackingRepository trackingRepository(Ref ref) =>
     switch (ref.watch(appModeControllerProvider)) {
-      AppModeLive() => throw UnimplementedError(
-        'SupabaseTrackingRepository arrives in phase 11',
+      AppModeLive() => SupabaseTrackingRepository(
+        ref.watch(supabaseClientProvider),
+        ref.watch(realtimeStatusHubProvider),
       ),
       AppModeDemo() => MockTrackingRepository(ref.watch(demoStoreProvider)),
     };
@@ -82,8 +95,8 @@ TrackingRepository trackingRepository(Ref ref) =>
 @Riverpod(keepAlive: true)
 ConnectionMonitor connectionMonitor(Ref ref) =>
     switch (ref.watch(appModeControllerProvider)) {
-      AppModeLive() => throw UnimplementedError(
-        'SupabaseConnectionMonitor arrives in phase 11',
+      AppModeLive() => SupabaseConnectionMonitor(
+        ref.watch(realtimeStatusHubProvider),
       ),
       AppModeDemo() => MockConnectionMonitor(),
     };
