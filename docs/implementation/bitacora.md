@@ -5,9 +5,9 @@
 
 ## Avance
 
-`█████████████░` 13/14 fases terminadas (93 %)
+`█████████████▒` 13/14 fases terminadas (93 %)
 
-**Fase actual:** ninguna — la siguiente es la Fase 14 · Lanzamiento
+**Fase actual:** Fase 14 · Lanzamiento (🚧 en progreso)
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -28,7 +28,7 @@
 | 11 | Supabase y Realtime | `feat/fase-11-supabase-y-realtime` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 12 | Ajustes e identidad | `feat/fase-12-ajustes-e-identidad` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 13 | Pulido y E2E | `feat/fase-13-pulido-y-e2e` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
-| 14 | Lanzamiento | `feat/fase-14-lanzamiento` | ⏳ Pendiente | — | — |
+| 14 | Lanzamiento | `feat/fase-14-lanzamiento` | 🚧 En progreso | 2026-09-30 | — |
 
 Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 
