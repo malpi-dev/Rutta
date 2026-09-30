@@ -5,9 +5,9 @@
 
 ## Avance
 
-`████████████▒░` 12/14 fases terminadas (86 %)
+`█████████████░` 13/14 fases terminadas (93 %)
 
-**Fase actual:** Fase 13 · Pulido y E2E (🚧 en progreso)
+**Fase actual:** ninguna — la siguiente es la Fase 14 · Lanzamiento
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -27,7 +27,7 @@
 | 10 | Auth | `feat/fase-10-auth` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 11 | Supabase y Realtime | `feat/fase-11-supabase-y-realtime` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 12 | Ajustes e identidad | `feat/fase-12-ajustes-e-identidad` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
-| 13 | Pulido y E2E | `feat/fase-13-pulido-y-e2e` | 🚧 En progreso | 2026-09-30 | — |
+| 13 | Pulido y E2E | `feat/fase-13-pulido-y-e2e` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 14 | Lanzamiento | `feat/fase-14-lanzamiento` | ⏳ Pendiente | — | — |
 
 Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
@@ -62,6 +62,14 @@ Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 > - **PR:** enlace o número.
 > - **Decisiones:** qué se decidió y por qué (también va a la tabla de abajo si cambia la definición o el plan).
 > - **Pendientes:** lo que quedó para otra fase (con el número de fase destino).
+
+### Fase 13 · Pulido y E2E — 2026-09-30
+- **Hecho:** `test/app/screens_smoke_test.dart` (claro/oscuro × 360x640 y 411x891 × texto 1.0/1.3: login, selector demo, listas, detalles en curso/asignado/entregado/cancelado, ajustes, verify, onboarding y las 3 hojas de permisos); `accessibility_test.dart` (tap targets y contraste); `ui_states_test.dart` (huecos de la auditoría: startup carga/error, skeleton del detalle, pedido `created`, detalle inexistente del repartidor, banner "Reconnecting" en listas y detalle); `.maestro/customer_demo_tracking.yaml` y `courier_demo_delivery.yaml`; `tool/e2e.sh`.
+- **Correcciones encontradas por los tests:** la hoja del selector demo desbordaba en 360x640 con texto 1.3 (ahora con scroll); contraste insuficiente: botones con etiqueta en negrita (14 bold = texto grande, 3:1), botones outlined/text en `secondary` (el naranja sobre fondo claro daba 2.9:1) y "Exit demo" del banner en `onTertiaryContainer`; chip de estado con `Semantics` "Status: X" (clave l10n `statusSemantics`); el marcador no se anima con `MediaQuery.disableAnimations`; el banner de demo no tenía `Semantics(identifier: 'demo-banner')` (Maestro no lo veía). `FakeRuttaMap` excluye de semántica el texto de depuración de las polilíneas; `testOverrides({theme})` y `screenOverrides(connection:)`.
+- **Verificación:** `./tool/check.sh` en verde (347 tests, 2 omitidos). `./tool/e2e.sh` sobre APK release sin `.env.json` en emulator-5554: `2/2 Flows Passed in 1m 30s`. A mano en el mismo APK: login oscuro, detalle RT-1042 en oscuro y en modo avión (aviso "Map unavailable", panel, ETA y marcador funcionan), horizontal sin overflow, claro. Greps de colores/textos literales: solo tokens `AppColors` (pines) y textos interpolados/separadores.
+- **PR:** ver historial de `main` (squash de `feat/fase-13-pulido-y-e2e`).
+- **Decisiones:** "Map unavailable" no tiene test de widget (depende de errores de tiles de flutter_map; verificado a mano en emulador); la animación del marcador reducida se cubre con test.
+- **Pendientes (🙋 o fase 14):** no se verificó a mano: "denegado para siempre" y *Pause* en dispositivo (cubiertos por tests de widgets), splash claro y forma redonda del ícono del launcher, home del repartidor con `emulator_drive`, prueba en teléfono físico, capturas definitivas (fase 14).
 
 ### Fase 12 · Ajustes e identidad — 2026-09-30
 - **Hecho:** `external_links.dart` (`externalLinkOpenerProvider` + `ExternalLinks`; la atribución del mapa ya lo usa); `SettingsScreen` definitiva (tema System/Light/Dark persistido, cuenta live con iniciales/nombre/email/rol y confirmación de *Sign out*, demo con rol y *Exit demo*, créditos OSM/tiles/OSRM, licencias) con ids `settings-theme-*`, `settings-sign-out`, `settings-exit-demo`; SVG propios en `assets/icon/` + PNG (librsvg), ícono adaptativo y splash claro/oscuro con Android 12 (`flutter_launcher_icons`, `flutter_native_splash`), recursos generados commiteados; logo en el login; textos l10n; tests de ajustes, tema aplicado y logo.
