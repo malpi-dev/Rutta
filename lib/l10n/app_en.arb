@@ -27,5 +27,12 @@
   "errorLocationServiceDisabled": "Turn on location services to share your position.",
   "validationRequired": "Required",
   "validationTooLong": "Too long",
-  "validationInvalidFormat": "Invalid value"
+  "validationInvalidFormat": "Invalid value",
+  "mapAttributionOsm": "OpenStreetMap contributors",
+  "mapUnavailable": "Map unavailable — check your connection",
+  "close": "Close",
+  "pickupPinLabel": "Pickup",
+  "dropoffPinLabel": "Drop-off",
+  "courierPinLabel": "Courier",
+  "devMapPreview": "Map preview"
 }

@@ -5,9 +5,9 @@
 
 ## Avance
 
-`███░░░░░░░░░░░` 3/14 fases terminadas (21 %)
+`████░░░░░░░░░░` 4/14 fases terminadas (29 %)
 
-**Fase actual:** ninguna — la siguiente es la Fase 04 · Mapa y rutas
+**Fase actual:** ninguna — la siguiente es la Fase 05 · Modo demo
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -18,7 +18,7 @@
 | 01 | Andamiaje | `feat/fase-01-andamiaje` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 02 | Core | `feat/fase-02-core` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 03 | Dominio | `feat/fase-03-dominio` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
-| 04 | Mapa y rutas | `feat/fase-04-mapa-y-rutas` | ⏳ Pendiente | — | — |
+| 04 | Mapa y rutas | `feat/fase-04-mapa-y-rutas` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 05 | Modo demo | `feat/fase-05-modo-demo` | ⏳ Pendiente | — | — |
 | 06 | Seguimiento del cliente | `feat/fase-06-seguimiento-cliente` | ⏳ Pendiente | — | — |
 | 07 | Entregas del repartidor | `feat/fase-07-entregas-repartidor` | ⏳ Pendiente | — | — |
@@ -62,6 +62,13 @@ Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 > - **PR:** enlace o número.
 > - **Decisiones:** qué se decidió y por qué (también va a la tabla de abajo si cambia la definición o el plan).
 > - **Pendientes:** lo que quedó para otra fase (con el número de fase destino).
+
+### Fase 04 · Mapa y rutas — 2026-09-30
+- **Hecho:** `MapMarker`/`MapPolyline`, `RuttaMap`/`RuttaMapController`/`RuttaMapProps`, `ruttaMapBuilderProvider`, `FlutterMapRuttaMap` (User-Agent, atribución enlazada, `darkModeTileBuilder`, aviso "Map unavailable" tras 3 errores de tiles), `lat_lng_mapper`; `PlacePin`/`PickupPin`/`DropoffPin`/`CourierPin`; `DemoRoute`; `tool/fetch_routes.dart` ejecutado (6 rutas OSRM: 2362, 3730, 2682, 3268, 2066 y 2910 m, todas dentro de 1500-4000) con `tool/routes/routes.json` y `demo_routes.dart`; `DevMapPreviewScreen` en `/dev/map` (solo debug) con botón en el login; `FakeRuttaMap` añadido a `testOverrides()`; tests del paso 7.
+- **Verificación:** `./tool/check.sh` en verde (142 tests). A mano en emulador Pixel_10_Pro: mapa claro (pines, ruta, repartidor), oscuro (filtro legible) y modo avión (aviso "Map unavailable", fondo neutro, pantalla usable).
+- **PR:** ver historial de `main` (squash de `feat/fase-04-mapa-y-rutas`).
+- **Decisiones:** `Routes.devMap` se excluye en `appRedirect` (si no, sin sesión redirigía al login); se añadieron `AppColors.markerContent`/`markerShadow` para no usar `Colors.white` fuera del tema; `PickupPin`/`DropoffPin` son envoltorios sobre `PlacePin`; `MapOptions` usa `initialCenter` cuando hay un solo punto; ignore justificado de `use_setters_to_change_properties` en `attach`. API de flutter_map 8.3.2 coincide con la fase. Sin capturas commiteadas.
+- **Pendientes:** el archivo SQL de rutas se rellena en la fase 09 (`--from-cache`); `DevMapPreviewScreen` se borra en la fase 06.
 
 ### Fase 03 · Dominio — 2026-09-30
 - **Hecho:** `GeoPoint` y `geo.dart` (haversine, rumbo, longitud, `projectOntoRoute`, `pointAlongRoute`, `splitRoute`); `OrderStatus` con tabla de transiciones; entidades freezed `Place`, `OrderItem`, `Order`, `OrderStatusEvent`, `CourierLocation`, `DevicePosition`, `RouteProgress` (+ `LocationAccess`); puertos `OrdersRepository`, `ConnectionMonitor`, `TrackingRepository`, `DeviceLocationRepository`, `AuthRepository`; casos de uso `AvailableOrderActions`, `ComputeRouteProgress`, `ShouldSendLocation`; `buildOrderTimeline`; validadores de auth; `test/helpers/builders.dart`.
