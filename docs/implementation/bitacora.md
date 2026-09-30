@@ -5,9 +5,9 @@
 
 ## Avance
 
-`██████▒░░░░░░░` 6/14 fases terminadas (43 %)
+`███████░░░░░░░` 7/14 fases terminadas (50 %)
 
-**Fase actual:** Fase 07 · Entregas del repartidor
+**Fase actual:** ninguna — la siguiente es la Fase 08 · Ubicación del repartidor
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -21,7 +21,7 @@
 | 04 | Mapa y rutas | `feat/fase-04-mapa-y-rutas` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 05 | Modo demo | `feat/fase-05-modo-demo` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 06 | Seguimiento del cliente | `feat/fase-06-seguimiento-cliente` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
-| 07 | Entregas del repartidor | `feat/fase-07-entregas-repartidor` | 🚧 En progreso | 2026-09-30 | — |
+| 07 | Entregas del repartidor | `feat/fase-07-entregas-repartidor` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 08 | Ubicación del repartidor | `feat/fase-08-ubicacion-repartidor` | ⏳ Pendiente | — | — |
 | 09 | Backend Supabase | `feat/fase-09-backend-supabase` | ⏳ Pendiente | — | — |
 | 10 | Auth | `feat/fase-10-auth` | ⏳ Pendiente | — | — |
@@ -62,6 +62,13 @@ Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 > - **PR:** enlace o número.
 > - **Decisiones:** qué se decidió y por qué (también va a la tabla de abajo si cambia la definición o el plan).
 > - **Pendientes:** lo que quedó para otra fase (con el número de fase destino).
+
+### Fase 07 · Entregas del repartidor — 2026-09-30
+- **Hecho:** `CourierOrdersScreen` definitiva (In progress / Assigned / Completed, nombre del cliente, pull-to-refresh, carga/vacío/error, `settings-open`); `OrderActionController` (`AsyncValue.guard`); `CourierActionButton` (botón `order-action-primary`, spinner sin doble pulsación, bloqueo `courierBusy` con texto de ayuda, diálogo de confirmación `confirm-delivered`, SnackBar de errores tipados); variante courier de `TrackingPanel` (línea de contexto por estado, fila "Customer", sin "Your courier"/"Last updated"); `TrackingMap` no observa la ubicación cuando el rol es courier; textos l10n; tests de lista, controlador y detalle del repartidor.
+- **Verificación:** `./tool/check.sh` en verde (196 tests). **No** se hizo la verificación manual en emulador del paso 6 (solo tests de widgets); queda pendiente para la fase 13 o cuando el autor la haga.
+- **PR:** ver historial de `main` (squash de `feat/fase-07-entregas-repartidor`).
+- **Decisiones:** el `ref.listen` de errores vive en `CourierActionButton` (en vez de en la pantalla) para no acoplar el detalle; clave l10n extra `courierHeadToDropoff` para `inTransit` del repartidor (el ETA/distancia llega con su posición en la fase 08); `OrderStatusHeadline` recibe `role` (por defecto customer); `_CourierRow` pasó a `_PersonRow` (etiqueta configurable); la ubicación simulada no se muestra al repartidor porque `TrackingMap` solo se suscribe en rol customer.
+- **Pendientes:** posición propia, ETA y marcador del repartidor (fase 08); verificación manual en emulador.
 
 ### Fase 06 · Seguimiento del cliente — 2026-09-30
 - **Hecho:** eliminada la vista previa de desarrollo (pantalla, ruta `/dev/map`, botón y texto l10n); providers `order`, `orderEvents`, `isConnected`, `courierLocation`, `now`, `routeProgress` e `isCourierLocationStale`; widgets `OrderStatusChip`, `OrderCard`, `SectionHeader`, `StatusTimeline`, `ReconnectingBanner`, `statusLabel`; lista del cliente (Active/History, pull-to-refresh, carga/vacío/error); `OrderDetailScreen` con `TrackingMap` (marcador animado sobre la ruta, ruta recorrida/restante, recentrar), `TrackingPanel` (estado, ETA, distancia, aviso stale, repartidor, direcciones, ítems, total, línea de tiempo) y `OrderDetailSkeleton`; ids `order-card-<code>`, `order-status-headline`, `tracking-eta`, `tracking-recenter`, `settings-open`; tests del paso 8.
