@@ -4,9 +4,9 @@
 |---|---|
 | **Tagline** | *Know exactly where your order is.* Delivery con la ubicación del repartidor en vivo sobre el mapa |
 | **Stack** | Flutter (stable más reciente) · Riverpod · go_router · Supabase · flutter_map + OpenStreetMap |
-| **Plataforma** | Android (objetivo principal) · iOS (si es posible, sin bloquear el MVP) |
+| **Plataforma** | Android (v1.0.0) · iOS fuera de la v1.0.0 (código compatible, no verificado) |
 | **Estado** | 📋 Planificado |
-| **Bundle id** | `com.malpidev.rutta` *(propuesta)* |
+| **Bundle id** | `com.malpidev.rutta` *(confirmado)* |
 | **Versión del documento** | 0.1 |
 | **Fecha** | 2026-09-25 |
 
@@ -406,7 +406,7 @@ Grants: `usage` en el schema `rutta` y los privilegios mínimos por tabla para `
 - Método (convención común de las 4 apps): **email + código OTP de 6 dígitos** — `signInWithOtp(email: …, shouldCreateUser: true)`
   y `verifyOTP(type: OtpType.email, …)`. Sin contraseñas ni magic link: no hay deep links de auth.
 - Configuración compartida del proyecto: "Confirm email" activado, plantilla de email genérica con `{{ .Token }}`,
-  SMTP propio en remoto. En local los correos llegan a la bandeja de Supabase (Inbucket/Mailpit).
+  SMTP por defecto de Supabase (solo entrega a miembros del equipo; ver `CLAUDE.md`). En local los correos llegan a la bandeja de Supabase (Inbucket/Mailpit).
 - Tras verificar, se lee `rutta.profiles`; si no existe (usuario nuevo o que viene de otra app del portafolio),
   el router lleva a `/onboarding`, que pide el nombre y llama a `rutta.ensure_profile(full_name)` → perfil `customer`.
 - Promover a `courier`: `update rutta.profiles set role = 'courier' where id = ...` desde SQL editor.
@@ -425,7 +425,7 @@ Carga estimada: 1 escritura cada 5 s por repartidor activo; con pocos repartidor
 ### 7.6 Migraciones, seed y entornos
 
 - `supabase/migrations/<timestamp>_rutta_init.sql`: schema, tablas, índices, funciones, triggers, RLS, grants y publicación Realtime. Solo toca el schema `rutta` .
-- `supabase/seed.sql` (local): 1 cliente y 2 repartidores de prueba en `auth.users` con su perfil (entran por OTP; el código llega a la bandeja local), 8 pedidos en Bogotá/CDMX *(ciudad a elegir, ver sección 17)* cubriendo todos los estados, con rutas reales precalculadas.
+- `supabase/seed.sql` (local): 1 cliente y 2 repartidores de prueba en `auth.users` con su perfil (entran por OTP; el código llega a la bandeja local), 8 pedidos en Ciudad de México (CDMX) cubriendo todos los estados, con rutas reales precalculadas.
 - `supabase/scripts/create_sample_orders.sql`: para remoto; recibe los UUID del cliente y repartidor (creados manualmente en el proyecto compartido) y crea/asigna pedidos de muestra.
 - `tool/fetch_routes.dart`: script de desarrollo que llama **una vez** a OSRM por cada par origen/destino del seed y escribe las polilíneas en un JSON que se pega en `seed.sql` y en los fixtures del mock. No se ejecuta en la app ni en CI.
 - **Local:** `supabase start` + `supabase db reset` (aplica migraciones + seed).
@@ -569,7 +569,7 @@ cd ~/Developer/MobilePorfolio/Rutta
 flutter --version                    # confirmar canal stable
 flutter create --org com.malpidev --project-name rutta \
   --platforms android,ios --empty .
-# → applicationId / bundle id: com.malpidev.rutta (propuesta)
+# → applicationId / bundle id: com.malpidev.rutta (confirmado)
 
 # 2. Dependencias
 flutter pub add flutter_riverpod riverpod_annotation go_router \
@@ -735,7 +735,7 @@ LOCATION_MIN_DISTANCE_M=10
 
 ## 16. Definición de terminado
 
-- [ ] F1–F10 funcionan en Android (y en iOS si es posible), con backend local y remoto.
+- [ ] F1–F10 funcionan en Android, con backend local y remoto.
 - [ ] El cliente ve moverse al repartidor en vivo (Realtime) con marcador animado sobre la ruta, en dos dispositivos reales o emulador + dispositivo.
 - [ ] RLS verificado: un cliente no ve pedidos ni ubicaciones ajenas; un repartidor no puede avanzar pedidos que no son suyos ni saltarse estados.
 - [ ] Modo demo funcionando **sin backend y en modo avión** (sin red el mapa muestra "Map unavailable" pero la simulación y el panel funcionan).
@@ -781,11 +781,14 @@ Para 🚀 Publicado: APK en GitHub Releases + GIF de demo (split-screen cliente/
 7. Un solo pedido en curso por repartidor, impuesto por índice único parcial.
 8. Modo demo con elección de rol y simulador acelerado (~60 s por recorrido).
 
+**Decisiones cerradas (2026-09-25)**
+- Datos de demo en Ciudad de México (coherente con Agendo).
+- Solo Android en v1.0.0; bundle id `com.malpidev.rutta` confirmado.
+- SMTP por defecto de Supabase; cuentas de prueba remotas (cliente/repartidor) vía `generateLink` con la secret key.
+
 **Decisiones abiertas**
-- Ciudad de los datos de demo (Bogotá, CDMX, Madrid…).
 - Estilo de mapa oscuro: filtro sobre OSM vs. proveedor con estilo oscuro (implica API key y otra política de uso).
 - Firma del APK de release (keystore propio vs. debug para demo).
-- Soporte iOS en la entrega de v1.0.0 (depende del tiempo disponible).
 
 ---
 
