@@ -5,9 +5,9 @@
 
 ## Avance
 
-`█████████▒░░░░` 9/14 fases terminadas (64 %)
+`██████████░░░░` 10/14 fases terminadas (71 %)
 
-**Fase actual:** Fase 10 · Auth (en progreso)
+**Fase actual:** ninguna — la siguiente es la Fase 11 · Supabase y Realtime
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -24,7 +24,7 @@
 | 07 | Entregas del repartidor | `feat/fase-07-entregas-repartidor` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 08 | Ubicación del repartidor | `feat/fase-08-ubicacion-repartidor` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 09 | Backend Supabase | `feat/fase-09-backend-supabase` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
-| 10 | Auth | `feat/fase-10-auth` | 🚧 En progreso | 2026-09-30 | — |
+| 10 | Auth | `feat/fase-10-auth` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 11 | Supabase y Realtime | `feat/fase-11-supabase-y-realtime` | ⏳ Pendiente | — | — |
 | 12 | Ajustes e identidad | `feat/fase-12-ajustes-e-identidad` | ⏳ Pendiente | — | — |
 | 13 | Pulido y E2E | `feat/fase-13-pulido-y-e2e` | ⏳ Pendiente | — | — |
@@ -62,6 +62,13 @@ Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 > - **PR:** enlace o número.
 > - **Decisiones:** qué se decidió y por qué (también va a la tabla de abajo si cambia la definición o el plan).
 > - **Pendientes:** lo que quedó para otra fase (con el número de fase destino).
+
+### Fase 10 · Auth — 2026-09-30
+- **Hecho:** dependencia directa `http`; `supabaseClientProvider` y `backendConfiguredProvider`; `Supabase.initialize` solo con `.env.json` (en `main()`, con `try/catch` y `debugPrint`); `mapSupabaseError` + `guardSupabase` (prefijos `RUTTA_*` antes que códigos); `SupabaseAuthRepository` (OTP, sesión con perfil y contador de secuencia, `ensure_profile`, sign out) y `MockAuthRepository`; `profile_mapper`; `sessionStateProvider` real; `LoginScreen` (con/sin backend), `VerifyCodeScreen` (autoenvío a 6 dígitos, reenvío tras 60 s, ayuda de Mailpit en debug local), `OnboardingScreen`; controladores `SendCode/VerifyCode/Onboarding` con `AsyncValue.guard`; `SettingsScreen` provisional con *Sign out* / *Exit demo*; textos l10n; `dart_test.yaml` con el tag `supabase`.
+- **Verificación:** `./tool/check.sh` en verde (275 tests, 1 omitido: la integración). Integración contra Supabase local ejecutada y en verde: `RUTTA_IT=1 RUTTA_PUBLISHABLE_KEY=<key> flutter test --tags supabase test/integration/` (OTP real leído de Mailpit -> `SessionNeedsProfile` -> `ensure_profile('IT User')` -> `SessionSignedIn` customer -> segunda llamada devuelve `IT User` -> sign out). **No** se hizo la verificación manual del paso 6 en emulador (solo tests de widgets y de integración); queda pendiente para el autor o la fase 13. No se tocó la BD (no hizo falta `db reset`).
+- **PR:** ver historial de `main` (squash de `feat/fase-10-auth`).
+- **Decisiones:** `backendConfiguredProvider` se sobreescribe en `main()` con `false` si `Supabase.initialize` falla, para que `Supabase.instance` nunca se lea sin inicializar; el listener de `onAuthStateChange` lleva `onError` (sin él los errores de red se propagan a la zona); el test de integración usa `AuthFlowType.implicit` porque un `SupabaseClient` sin `Supabase.initialize` no tiene `asyncStorage` y PKCE no está disponible (la app real sí lo tiene), y como ese cliente no emite `initialSession` el primer estado llega tras `verifyCode`; `demoOtpCode` vive en `auth/domain/demo_otp.dart`; el test de flujo del repartidor usa `screenOverrides` porque el `locationPublisher` del home del repartidor lee `trackingRepository`, que en modo live lanza `UnimplementedError` hasta la fase 11 (sin override la pantalla falla al construirse); `AuthErrorKind.codeExpired` se mantiene sin uso (GoTrue no distingue).
+- **Pendientes:** fase 11: repositorios Supabase de pedidos/tracking/monitor (mientras tanto, en modo live el home del repartidor falla al construirse por `UnimplementedError` de `trackingRepository`; el del cliente muestra el error genérico con *Retry*); verificación manual en emulador de login/OTP/onboarding/sesión persistente con `courier1@rutta.test`.
 
 ### Fase 09 · Backend Supabase — 2026-09-30
 - **Hecho:** `supabase/config.toml` (schema `rutta` expuesto, OTP de 6 dígitos, plantilla `otp.html` con `{{ .Token }}`, Realtime, seed); migración `20261005000000_rutta_init.sql` (4 tablas, índice de un pedido en curso por repartidor, `my_role`, `is_valid_transition`, triggers de guarda/historial/borrado de ubicación/hora del servidor, RPCs `ensure_profile`, `advance_order_status`, `admin_assign_order`, grants por columna, RLS con las 10 políticas comentadas, publicación de Realtime); `seed.sql` (3 usuarios, 8 pedidos, 25 eventos, 2 ubicaciones, rutas reales rellenadas con `fetch_routes.dart --from-cache`); `scripts/create_sample_orders.sql`; tests pgTAP `rls_test.sql` (29) y `business_test.sql` (25); job `database` en CI; `.env.json` local (fuera de git).
@@ -153,6 +160,7 @@ Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 | 2026-09-30 | Plan | Decisiones abiertas de §17 resueltas: mapa oscuro con `darkModeTileBuilder` sobre OSM (sin API key); firma con keystore propio con respaldo a la clave debug si no existe (igual que Centavo); código generado **no** se commitea; Maestro **no** corre en CI. | Propuestas de la propia definición y del precedente de Centavo. |
 | 2026-09-30 | Plan | Scripts de desarrollo (no se usan en la app ni en CI): `tool/emulator_drive.dart` (GPS del emulador por la ruta, fase 08), el flag `--dart-define=DEMO_REAL_GPS=true` (el repartidor del demo usa el GPS real, fase 08), `tool/simulate_courier.sh` (mueve a un repartidor en Supabase local con `psql`, fase 11) y `tool/get_otp.sh` (código OTP de cuentas de prueba en remoto con la secret key, fase 14). | Permiten probar el tracking en vivo con un solo emulador y crear cuentas de prueba sin SMTP propio. |
 | 2026-09-30 | 09 | Dos políticas de `courier_locations` (`locations_insert_courier`, `locations_update_courier`) en vez de `locations_upsert_courier`; no existe `is_order_customer()`. | Una política por comando en Postgres; `exists` sobre `orders` evita recursión. |
+| 2026-09-30 | 10 | El test de integración de auth usa flujo implícito y no espera `initialSession`; `backendConfiguredProvider` se fuerza a `false` si `Supabase.initialize` falla. | `SupabaseClient` sin `Supabase.initialize` no tiene `asyncStorage` (PKCE) ni emite `initialSession`; evitar leer `Supabase.instance` sin inicializar. |
 
 ## Bloqueos
 
