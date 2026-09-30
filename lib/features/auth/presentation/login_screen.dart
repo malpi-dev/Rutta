@@ -63,7 +63,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
     return AuthScaffold(
       children: [
-        Icon(Icons.route, size: 56, color: theme.colorScheme.primary),
+        Center(
+          child: Container(
+            width: 96,
+            height: 96,
+            decoration: BoxDecoration(
+              color: theme.colorScheme.primary,
+              shape: BoxShape.circle,
+            ),
+            child: Image.asset('assets/icon/splash_logo.png', height: 96),
+          ),
+        ),
         const SizedBox(height: 12),
         Text(
           l10n.appTitle,
