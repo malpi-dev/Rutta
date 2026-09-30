@@ -25,4 +25,8 @@ abstract final class AppColors {
   /// `created` / `cancelled` statuses and the stale courier marker.
   static const neutralLight = Color(0xFF6B7280);
   static const neutralDark = Color(0xFF9CA3AF);
+
+  /// Glyph and border on map pins (same in both themes: pins are colored).
+  static const markerContent = Color(0xFFFFFFFF);
+  static const markerShadow = Color(0x33000000);
 }
