@@ -5,9 +5,9 @@
 
 ## Avance
 
-`▒░░░░░░░░░░░░░` 0/14 fases terminadas (0 %)
+`█░░░░░░░░░░░░░` 1/14 fases terminadas (7 %)
 
-**Fase actual:** Fase 01 · Andamiaje (🚧 En progreso)
+**Fase actual:** ninguna — la siguiente es la Fase 02 · Core
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -15,7 +15,7 @@
 
 | # | Fase | Rama | Estado | Inicio | Fin |
 |---|---|---|---|---|---|
-| 01 | Andamiaje | `feat/fase-01-andamiaje` | 🚧 En progreso | 2026-09-30 | — |
+| 01 | Andamiaje | `feat/fase-01-andamiaje` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 02 | Core | `feat/fase-02-core` | ⏳ Pendiente | — | — |
 | 03 | Dominio | `feat/fase-03-dominio` | ⏳ Pendiente | — | — |
 | 04 | Mapa y rutas | `feat/fase-04-mapa-y-rutas` | ⏳ Pendiente | — | — |
@@ -40,17 +40,17 @@ Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 
 | Paquete / herramienta | Versión |
 |---|---|
-| Flutter / Dart | — |
-| flutter_riverpod / riverpod_generator | — |
-| go_router | — |
-| freezed / freezed_annotation | — |
-| supabase_flutter | — |
-| flutter_map / latlong2 | — |
-| geolocator | — |
-| wakelock_plus | — |
-| very_good_analysis | — |
-| Supabase CLI | — |
-| Maestro | — |
+| Flutter / Dart | 3.44.6 / 3.12.2 |
+| flutter_riverpod / riverpod_generator | 3.4.3 / 4.0.9 |
+| go_router | 17.5.0 |
+| freezed / freezed_annotation | 4.0.0-dev.3 / 3.1.0 |
+| supabase_flutter | 2.18.0 |
+| flutter_map / latlong2 | 8.3.2 / 0.10.1 |
+| geolocator | 14.0.1 |
+| wakelock_plus | 1.8.1 |
+| very_good_analysis | 10.3.0 |
+| Supabase CLI | 2.118.0 |
+| Maestro | 2.10.0 |
 
 ## Registro
 
@@ -63,7 +63,12 @@ Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 > - **Decisiones:** qué se decidió y por qué (también va a la tabla de abajo si cambia la definición o el plan).
 > - **Pendientes:** lo que quedó para otra fase (con el número de fase destino).
 
-_Sin entradas todavía._
+### Fase 01 · Andamiaje — 2026-09-30
+- **Hecho:** `flutter create` (com.malpidev.rutta, android+ios), dependencias, lints VGA, build.yaml, l10n, permisos Android (INTERNET, FINE/COARSE; cleartext solo en debug) e iOS, estructura de carpetas, `.env.example(.json)`, `.gitignore`, `tool/check.sh` y `check_architecture.sh`, app mínima + test de humo, `CLAUDE.md` y `README.md`, CI.
+- **Verificación:** `./tool/check.sh` en verde (1 test); `flutter build apk --debug` OK; app ejecutada en el emulador Pixel_10_Pro mostrando "Rutta" (captura por adb).
+- **PR:** ver historial de `main` (squash de `feat/fase-01-andamiaje`).
+- **Decisiones:** `freezed ^4.0.0-dev.3` (igual que Centavo); `minSdk` = `flutter.minSdkVersion` = 24 (≥ 23, sin cambios); `flutter_lints` eliminado; actions/checkout@v7 como en Centavo; `flutter gen-l10n` genera en `lib/l10n/`.
+- **Pendientes:** ninguno.
 
 ## Decisiones y desviaciones respecto a la definición
 
