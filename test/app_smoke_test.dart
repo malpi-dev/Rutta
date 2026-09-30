@@ -7,7 +7,9 @@ import 'package:rutta/core/di/provider_retry.dart';
 import 'helpers/test_overrides.dart';
 
 void main() {
-  testWidgets('starts on the provisional login screen', (tester) async {
+  testWidgets('starts on the login screen (demo only without a backend)', (
+    tester,
+  ) async {
     await tester.pumpWidget(
       ProviderScope(
         retry: noAutomaticRetry,
@@ -16,11 +18,9 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(
-      find.descendant(of: find.byType(AppBar), matching: find.text('Rutta')),
-      findsOneWidget,
-    );
-    expect(find.text('Coming soon'), findsOneWidget);
+    expect(find.text('Rutta'), findsOneWidget);
+    expect(find.byKey(const Key('login-explore-demo')), findsOneWidget);
+    expect(find.byKey(const Key('login-email')), findsNothing);
     await tester.pumpWidget(const SizedBox());
   });
 }

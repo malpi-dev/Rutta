@@ -79,20 +79,26 @@
   "distanceLeft": "{distance} left",
   "@distanceLeft": {
     "placeholders": {
-      "distance": {"type": "String"}
+      "distance": {
+        "type": "String"
+      }
     }
   },
   "deliveredAt": "Delivered at {time}",
   "@deliveredAt": {
     "placeholders": {
-      "time": {"type": "String"}
+      "time": {
+        "type": "String"
+      }
     }
   },
   "orderCancelled": "This order was cancelled",
   "lastUpdatedAgo": "Last updated {ago}",
   "@lastUpdatedAgo": {
     "placeholders": {
-      "ago": {"type": "String"}
+      "ago": {
+        "type": "String"
+      }
     }
   },
   "courierLabel": "Your courier",
@@ -114,16 +120,52 @@
   "confirmDeliveredBody": "Confirm that you handed order {code} to the customer.",
   "@confirmDeliveredBody": {
     "placeholders": {
-      "code": {"type": "String"}
+      "code": {
+        "type": "String"
+      }
     }
   },
   "courierNextPickup": "Head to {pickupName} to pick up the order",
   "@courierNextPickup": {
     "placeholders": {
-      "pickupName": {"type": "String"}
+      "pickupName": {
+        "type": "String"
+      }
     }
   },
   "courierNextStart": "Start the delivery when you leave the store",
   "courierHeadToDropoff": "Take the order to the drop-off address",
-  "customerLabel": "Customer"
+  "customerLabel": "Customer",
+  "tagline": "Know exactly where your order is.",
+  "emailLabel": "Email",
+  "sendCode": "Send code",
+  "orDivider": "or",
+  "demoOnlyNotice": "This build has no backend configured. Explore the demo to try Rutta.",
+  "verifyTitle": "Check your email",
+  "verifySubtitle": "Enter the 6-digit code we sent to {email}",
+  "@verifySubtitle": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "verify": "Verify",
+  "resendCode": "Resend code",
+  "resendIn": "Resend in {seconds}s",
+  "@resendIn": {
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "codeSent": "We sent you a new code.",
+  "useDifferentEmail": "Use a different email",
+  "localMailHint": "Local dev: the code is in Mailpit (http://127.0.0.1:54324)",
+  "onboardingTitle": "What's your name?",
+  "onboardingSubtitle": "Couriers see it when they bring your order.",
+  "nameLabel": "Full name",
+  "useDifferentAccount": "Use a different account",
+  "signOut": "Sign out"
 }

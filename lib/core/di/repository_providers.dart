@@ -4,6 +4,9 @@ import 'package:rutta/core/di/app_mode_provider.dart';
 import 'package:rutta/core/domain/app_mode.dart';
 import 'package:rutta/core/domain/clock.dart';
 import 'package:rutta/core/domain/user_role.dart';
+import 'package:rutta/core/supabase/supabase_client_provider.dart';
+import 'package:rutta/features/auth/data/supabase_auth_repository.dart';
+import 'package:rutta/features/auth/domain/auth_repository.dart';
 import 'package:rutta/features/auth/domain/session_state.dart';
 import 'package:rutta/features/auth/presentation/session_providers.dart';
 import 'package:rutta/features/demo/data/demo_store.dart';
@@ -38,6 +41,10 @@ SharedPreferences sharedPreferences(Ref ref) => throw UnimplementedError(
 @Riverpod(keepAlive: true)
 SettingsRepository settingsRepository(Ref ref) =>
     PrefsSettingsRepository(ref.watch(sharedPreferencesProvider));
+
+@Riverpod(keepAlive: true)
+AuthRepository authRepository(Ref ref) =>
+    SupabaseAuthRepository(ref.watch(supabaseClientProvider));
 
 /// In-memory world of the demo. Entering or leaving the demo rebuilds it, so
 /// every visit starts from a fresh world and the old one is disposed.
