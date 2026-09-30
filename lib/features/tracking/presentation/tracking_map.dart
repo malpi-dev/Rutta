@@ -107,10 +107,11 @@ class _TrackingMapState extends ConsumerState<TrackingMap>
     _animation.stop();
   }
 
-  /// The location is only observed while the order is in progress, so
-  /// created/assigned/finished orders never start a subscription.
+  /// The location is only observed while the order is in progress and only
+  /// for the customer: the courier's own position arrives in phase 08.
   void _syncSubscription() {
-    final inProgress = widget.order.status.isInProgress;
+    final inProgress =
+        widget.order.status.isInProgress && widget.role == UserRole.customer;
     if (inProgress && _subscription == null) {
       _subscription = ref.listenManual(
         courierLocationProvider(widget.order.id),

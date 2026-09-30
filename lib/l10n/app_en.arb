@@ -83,5 +83,30 @@
   "itemsTitle": "Items",
   "totalLabel": "Total",
   "timelineTitle": "Status",
-  "recenterOnCourier": "Center on courier"
+  "recenterOnCourier": "Center on courier",
+  "deliveriesTitle": "My deliveries",
+  "inProgressSection": "In progress",
+  "assignedSection": "Assigned",
+  "completedSection": "Completed",
+  "noDeliveriesTitle": "No deliveries assigned",
+  "noDeliveriesHint": "New orders assigned to you will show up here automatically.",
+  "actionPickUp": "Picked up",
+  "actionStartDelivery": "Start delivery",
+  "actionMarkDelivered": "Mark as delivered",
+  "confirmDeliveredTitle": "Mark as delivered?",
+  "confirmDeliveredBody": "Confirm that you handed order {code} to the customer.",
+  "@confirmDeliveredBody": {
+    "placeholders": {
+      "code": {"type": "String"}
+    }
+  },
+  "courierNextPickup": "Head to {pickupName} to pick up the order",
+  "@courierNextPickup": {
+    "placeholders": {
+      "pickupName": {"type": "String"}
+    }
+  },
+  "courierNextStart": "Start the delivery when you leave the store",
+  "courierHeadToDropoff": "Take the order to the drop-off address",
+  "customerLabel": "Customer"
 }

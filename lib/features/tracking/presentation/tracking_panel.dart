@@ -11,11 +11,13 @@ import 'package:rutta/features/orders/domain/order.dart';
 import 'package:rutta/features/orders/domain/order_status.dart';
 import 'package:rutta/features/orders/domain/order_timeline.dart';
 import 'package:rutta/features/orders/presentation/orders_providers.dart';
+import 'package:rutta/features/orders/presentation/widgets/courier_action_button.dart';
 import 'package:rutta/features/orders/presentation/widgets/status_labels.dart';
 import 'package:rutta/features/orders/presentation/widgets/status_timeline.dart';
 import 'package:rutta/features/tracking/presentation/tracking_providers.dart';
+import 'package:rutta/l10n/app_localizations.dart';
 
-/// Bottom sheet content of the order detail (customer variant).
+/// Bottom sheet content of the order detail (customer and courier variants).
 class TrackingPanel extends StatelessWidget {
   const TrackingPanel({
     required this.order,
@@ -51,11 +53,23 @@ class TrackingPanel extends StatelessWidget {
               ),
             ),
           ),
-          OrderStatusHeadline(order: order),
-          if (order.status.isInProgress) StaleLocationNotice(orderId: order.id),
-          if (order.courierName != null) ...[
+          OrderStatusHeadline(order: order, role: role),
+          if (role == UserRole.courier) CourierActionButton(order: order),
+          if (role == UserRole.customer && order.status.isInProgress)
+            StaleLocationNotice(orderId: order.id),
+          if (role == UserRole.customer && order.courierName != null) ...[
             const SizedBox(height: 20),
-            _CourierRow(name: order.courierName!),
+            _PersonRow(
+              label: context.l10n.courierLabel,
+              name: order.courierName!,
+            ),
+          ],
+          if (role == UserRole.courier && order.customerName != null) ...[
+            const SizedBox(height: 20),
+            _PersonRow(
+              label: context.l10n.customerLabel,
+              name: order.customerName!,
+            ),
           ],
           const SizedBox(height: 20),
           _Addresses(order: order),
@@ -71,9 +85,14 @@ class TrackingPanel extends StatelessWidget {
 
 /// Big status text plus a context line (ETA/distance, waiting hints...).
 class OrderStatusHeadline extends ConsumerWidget {
-  const OrderStatusHeadline({required this.order, super.key});
+  const OrderStatusHeadline({
+    required this.order,
+    this.role = UserRole.customer,
+    super.key,
+  });
 
   final Order order;
+  final UserRole role;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -82,17 +101,22 @@ class OrderStatusHeadline extends ConsumerWidget {
     final muted = theme.textTheme.bodyLarge?.copyWith(
       color: theme.colorScheme.onSurfaceVariant,
     );
-    final contextLine = switch (order.status) {
-      OrderStatus.created => Text(l10n.waitingForCourier, style: muted),
-      OrderStatus.assigned => Text(l10n.trackingStartsOnPickup, style: muted),
-      OrderStatus.pickedUp || OrderStatus.inTransit => _progressLine(
-        context,
-        ref,
-        muted,
-      ),
-      OrderStatus.delivered => _deliveredLine(ref, muted),
-      OrderStatus.cancelled => Text(l10n.orderCancelled, style: muted),
-    };
+    final contextLine = role == UserRole.courier
+        ? _courierLine(l10n, ref, muted)
+        : switch (order.status) {
+            OrderStatus.created => Text(l10n.waitingForCourier, style: muted),
+            OrderStatus.assigned => Text(
+              l10n.trackingStartsOnPickup,
+              style: muted,
+            ),
+            OrderStatus.pickedUp || OrderStatus.inTransit => _progressLine(
+              context,
+              ref,
+              muted,
+            ),
+            OrderStatus.delivered => _deliveredLine(ref, muted),
+            OrderStatus.cancelled => Text(l10n.orderCancelled, style: muted),
+          };
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -109,6 +133,19 @@ class OrderStatusHeadline extends ConsumerWidget {
       ],
     );
   }
+
+  Widget _courierLine(AppLocalizations l10n, WidgetRef ref, TextStyle? muted) =>
+      switch (order.status) {
+        OrderStatus.assigned => Text(
+          l10n.courierNextPickup(order.pickup.name ?? order.pickup.address),
+          style: muted,
+        ),
+        OrderStatus.pickedUp => Text(l10n.courierNextStart, style: muted),
+        OrderStatus.inTransit => Text(l10n.courierHeadToDropoff, style: muted),
+        OrderStatus.delivered => _deliveredLine(ref, muted),
+        OrderStatus.cancelled => Text(l10n.orderCancelled, style: muted),
+        OrderStatus.created => Text(l10n.waitingForCourier, style: muted),
+      };
 
   Widget _progressLine(BuildContext context, WidgetRef ref, TextStyle? muted) {
     final l10n = context.l10n;
@@ -192,9 +229,10 @@ class StaleLocationNotice extends ConsumerWidget {
   }
 }
 
-class _CourierRow extends StatelessWidget {
-  const _CourierRow({required this.name});
+class _PersonRow extends StatelessWidget {
+  const _PersonRow({required this.label, required this.name});
 
+  final String label;
   final String name;
 
   @override
@@ -218,7 +256,7 @@ class _CourierRow extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              context.l10n.courierLabel,
+              label,
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
