@@ -5,9 +5,9 @@
 
 ## Avance
 
-`░░░░░░░░░░░░░░` 0/14 fases terminadas (0 %)
+`▒░░░░░░░░░░░░░` 0/14 fases terminadas (0 %)
 
-**Fase actual:** ninguna — la siguiente es la Fase 01 · Andamiaje
+**Fase actual:** Fase 01 · Andamiaje (🚧 En progreso)
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -15,7 +15,7 @@
 
 | # | Fase | Rama | Estado | Inicio | Fin |
 |---|---|---|---|---|---|
-| 01 | Andamiaje | `feat/fase-01-andamiaje` | ⏳ Pendiente | — | — |
+| 01 | Andamiaje | `feat/fase-01-andamiaje` | 🚧 En progreso | 2026-09-30 | — |
 | 02 | Core | `feat/fase-02-core` | ⏳ Pendiente | — | — |
 | 03 | Dominio | `feat/fase-03-dominio` | ⏳ Pendiente | — | — |
 | 04 | Mapa y rutas | `feat/fase-04-mapa-y-rutas` | ⏳ Pendiente | — | — |
