@@ -1,0 +1,33 @@
+appId: com.malpidev.rutta
+name: Courier - deliver an order (demo)
+---
+- launchApp:
+    clearState: true
+- tapOn:
+    id: login-explore-demo
+- tapOn:
+    id: demo-as-courier
+- tapOn:
+    id: order-card-RT-1043
+- assertVisible: "Picked up"
+- tapOn:
+    id: order-action-primary
+- extendedWaitUntil:
+    visible: "Start delivery"
+    timeout: 10000
+- tapOn:
+    id: order-action-primary
+- extendedWaitUntil:
+    visible:
+      id: sharing-indicator
+    timeout: 10000
+- extendedWaitUntil:
+    visible: "Mark as delivered"
+    timeout: 10000
+- tapOn:
+    id: order-action-primary
+- tapOn:
+    id: confirm-delivered
+- extendedWaitUntil:
+    visible: "Delivered at.*"
+    timeout: 10000
