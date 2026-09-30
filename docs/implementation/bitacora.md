@@ -5,9 +5,9 @@
 
 ## Avance
 
-`████░░░░░░░░░░` 4/14 fases terminadas (29 %)
+`█████░░░░░░░░░` 5/14 fases terminadas (36 %)
 
-**Fase actual:** ninguna — la siguiente es la Fase 05 · Modo demo
+**Fase actual:** ninguna — la siguiente es la Fase 06 · Seguimiento del cliente
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -19,7 +19,7 @@
 | 02 | Core | `feat/fase-02-core` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 03 | Dominio | `feat/fase-03-dominio` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 04 | Mapa y rutas | `feat/fase-04-mapa-y-rutas` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
-| 05 | Modo demo | `feat/fase-05-modo-demo` | ⏳ Pendiente | — | — |
+| 05 | Modo demo | `feat/fase-05-modo-demo` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 06 | Seguimiento del cliente | `feat/fase-06-seguimiento-cliente` | ⏳ Pendiente | — | — |
 | 07 | Entregas del repartidor | `feat/fase-07-entregas-repartidor` | ⏳ Pendiente | — | — |
 | 08 | Ubicación del repartidor | `feat/fase-08-ubicacion-repartidor` | ⏳ Pendiente | — | — |
@@ -62,6 +62,13 @@ Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 > - **PR:** enlace o número.
 > - **Decisiones:** qué se decidió y por qué (también va a la tabla de abajo si cambia la definición o el plan).
 > - **Pendientes:** lo que quedó para otra fase (con el número de fase destino).
+
+### Fase 05 · Modo demo — 2026-09-30
+- **Hecho:** `DemoUsers` + `buildDemoWorld` (6 pedidos con rutas reales; Alex 5, Carlos 3); `DemoCourierSimulator`; `DemoStore` (reglas de `advance` iguales a la RPC, simulación del repartidor del cliente, `dispose`); `watchStore` (helper de streams con latencia); `MockOrdersRepository`, `MockTrackingRepository`, `MockDeviceLocationRepository`, `MockConnectionMonitor`; providers `demoStore`, repositorios por `AppMode` (live provisional con `UnimplementedError`) y casos de uso; selector de rol, botón `login-explore-demo`, `DemoBanner` en `RuttaApp`; listas provisionales con `myOrdersProvider`; textos l10n; tests del paso 7.
+- **Verificación:** `./tool/check.sh` en verde (167 tests). A mano en emulador Pixel_10_Pro **en modo avión**: login, *Explore demo*, cliente (5 pedidos, banner), *Exit demo*, repartidor (3 pedidos).
+- **PR:** ver historial de `main` (squash de `feat/fase-05-modo-demo`).
+- **Decisiones:** `fake_async` añadido a `dev_dependencies` (lint `depend_on_referenced_packages`); `DemoStore.addOrder` (`@visibleForTesting`) para el test de `CourierBusyError`; en `MockDeviceLocationRepository.onCancel` se detienen primero los timers y luego se cancela la suscripción (si no, quedaba un timer pendiente); `ignore: cancel_subscriptions` justificado (se cancela en `stopCurrent`); clave l10n extra `ordersEmptyTitle` para el estado vacío de las listas provisionales.
+- **Pendientes:** las listas y el detalle definitivos llegan en las fases 06 y 07.
 
 ### Fase 04 · Mapa y rutas — 2026-09-30
 - **Hecho:** `MapMarker`/`MapPolyline`, `RuttaMap`/`RuttaMapController`/`RuttaMapProps`, `ruttaMapBuilderProvider`, `FlutterMapRuttaMap` (User-Agent, atribución enlazada, `darkModeTileBuilder`, aviso "Map unavailable" tras 3 errores de tiles), `lat_lng_mapper`; `PlacePin`/`PickupPin`/`DropoffPin`/`CourierPin`; `DemoRoute`; `tool/fetch_routes.dart` ejecutado (6 rutas OSRM: 2362, 3730, 2682, 3268, 2066 y 2910 m, todas dentro de 1500-4000) con `tool/routes/routes.json` y `demo_routes.dart`; `DevMapPreviewScreen` en `/dev/map` (solo debug) con botón en el login; `FakeRuttaMap` añadido a `testOverrides()`; tests del paso 7.

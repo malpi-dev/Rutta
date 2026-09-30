@@ -34,5 +34,15 @@
   "pickupPinLabel": "Pickup",
   "dropoffPinLabel": "Drop-off",
   "courierPinLabel": "Courier",
-  "devMapPreview": "Map preview"
+  "devMapPreview": "Map preview",
+  "exploreDemo": "Explore demo",
+  "exitDemo": "Exit demo",
+  "demoBannerMessage": "Demo mode — sample data",
+  "demoPickerTitle": "Explore Rutta",
+  "demoPickerSubtitle": "Sample data, no account and no internet needed.",
+  "demoAsCustomer": "Explore as customer",
+  "demoAsCustomerHint": "Follow a courier live on the map",
+  "demoAsCourier": "Explore as courier",
+  "demoAsCourierHint": "Deliver an order step by step",
+  "ordersEmptyTitle": "No orders yet"
 }
