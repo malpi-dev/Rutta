@@ -11,39 +11,46 @@ class DemoBanner extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final scheme = Theme.of(context).colorScheme;
     final l10n = context.l10n;
-    return Material(
-      key: const Key('demo-banner'),
-      color: scheme.tertiaryContainer,
-      child: SafeArea(
-        bottom: false,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            children: [
-              Icon(
-                Icons.science_outlined,
-                size: 18,
-                color: scheme.onTertiaryContainer,
-              ),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  l10n.demoBannerMessage,
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: scheme.onTertiaryContainer,
+    return Semantics(
+      identifier: 'demo-banner',
+      container: true,
+      child: Material(
+        key: const Key('demo-banner'),
+        color: scheme.tertiaryContainer,
+        child: SafeArea(
+          bottom: false,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.science_outlined,
+                  size: 18,
+                  color: scheme.onTertiaryContainer,
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    l10n.demoBannerMessage,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                      color: scheme.onTertiaryContainer,
+                    ),
                   ),
                 ),
-              ),
-              Semantics(
-                identifier: 'demo-exit',
-                child: TextButton(
-                  key: const Key('demo-exit'),
-                  onPressed: () =>
-                      ref.read(appModeControllerProvider.notifier).exitDemo(),
-                  child: Text(l10n.exitDemo),
+                Semantics(
+                  identifier: 'demo-exit',
+                  child: TextButton(
+                    key: const Key('demo-exit'),
+                    style: TextButton.styleFrom(
+                      foregroundColor: scheme.onTertiaryContainer,
+                    ),
+                    onPressed: () =>
+                        ref.read(appModeControllerProvider.notifier).exitDemo(),
+                    child: Text(l10n.exitDemo),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

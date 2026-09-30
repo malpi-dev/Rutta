@@ -1,0 +1,25 @@
+appId: com.malpidev.rutta
+name: Customer - follow a live delivery (demo)
+---
+- launchApp:
+    clearState: true
+- tapOn:
+    id: login-explore-demo
+- tapOn:
+    id: demo-as-customer
+- assertVisible:
+    id: demo-banner
+- tapOn:
+    id: order-card-RT-1042
+- assertVisible: "In transit"
+- extendedWaitUntil:
+    visible:
+      id: tracking-eta
+    timeout: 10000
+# The simulated courier needs ~60 s to arrive. "Delivered at <time>" only exists once the order is delivered
+# ("Delivered" alone also appears as an upcoming step of the timeline).
+- extendedWaitUntil:
+    visible: "Delivered at.*"
+    timeout: 120000
+- back
+- assertVisible: "History"

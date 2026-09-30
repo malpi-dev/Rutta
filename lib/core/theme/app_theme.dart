@@ -52,8 +52,25 @@ abstract final class AppTheme {
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
       ),
+      // Bold 14 sp counts as "large text" (3:1 minimum contrast), which the
+      // brand orange reaches against white; regular weight would need 4.5:1.
+      // Secondary (navy / light blue) instead of the orange primary for
+      // low-emphasis buttons: orange text on the light background is < 3:1.
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          textStyle: _buttonLabel.resolve({}),
+          foregroundColor: secondary,
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          textStyle: _buttonLabel.resolve({}),
+          foregroundColor: secondary,
+        ),
+      ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
+          textStyle: _buttonLabel.resolve({}),
           minimumSize: const Size.fromHeight(52),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
@@ -68,6 +85,10 @@ abstract final class AppTheme {
       ),
     );
   }
+
+  static const _buttonLabel = WidgetStatePropertyAll<TextStyle>(
+    TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.w700),
+  );
 
   static TextTheme _textTheme(Brightness brightness, Color onSurface) {
     final base = brightness == Brightness.dark

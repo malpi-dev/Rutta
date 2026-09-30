@@ -66,6 +66,12 @@
   "noOrdersDemoHint": "Nothing here yet.",
   "activeSection": "Active",
   "historySection": "History",
+  "statusSemantics": "Status: {status}",
+  "@statusSemantics": {
+    "placeholders": {
+      "status": {"type": "String"}
+    }
+  },
   "statusCreated": "Placed",
   "statusAssigned": "Courier assigned",
   "statusPickedUp": "Picked up",
