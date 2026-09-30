@@ -5,9 +5,9 @@
 
 ## Avance
 
-`███████░░░░░░░` 7/14 fases terminadas (50 %)
+`████████░░░░░░` 8/14 fases terminadas (57 %)
 
-**Fase actual:** ninguna — la siguiente es la Fase 08 · Ubicación del repartidor
+**Fase actual:** ninguna — la siguiente es la Fase 09 · Backend Supabase
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -22,7 +22,7 @@
 | 05 | Modo demo | `feat/fase-05-modo-demo` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 06 | Seguimiento del cliente | `feat/fase-06-seguimiento-cliente` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 07 | Entregas del repartidor | `feat/fase-07-entregas-repartidor` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
-| 08 | Ubicación del repartidor | `feat/fase-08-ubicacion-repartidor` | ⏳ Pendiente | — | — |
+| 08 | Ubicación del repartidor | `feat/fase-08-ubicacion-repartidor` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 09 | Backend Supabase | `feat/fase-09-backend-supabase` | ⏳ Pendiente | — | — |
 | 10 | Auth | `feat/fase-10-auth` | ⏳ Pendiente | — | — |
 | 11 | Supabase y Realtime | `feat/fase-11-supabase-y-realtime` | ⏳ Pendiente | — | — |
@@ -62,6 +62,13 @@ Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 > - **PR:** enlace o número.
 > - **Decisiones:** qué se decidió y por qué (también va a la tabla de abajo si cambia la definición o el plan).
 > - **Pendientes:** lo que quedó para otra fase (con el número de fase destino).
+
+### Fase 08 · Ubicación del repartidor — 2026-09-30
+- **Hecho:** `GeolocatorApi` + `GeolocatorDeviceLocationRepository` (permisos, posiciones UTC, errores tipados); `Env.demoUsesRealGps` (`DEMO_REAL_GPS`); `currentUserIdProvider`/`currentRoleProvider` y selección del repositorio de dispositivo por modo; `ensureLocationAccess` + hoja de permisos (denied / deniedForever / serviceDisabled, recheck al volver de ajustes); `LocationPublisherEngine` (throttling vía `ShouldSendLocation`, pausa manual y por ciclo de vida, wakelock, errores) + `LocationSharingState`, `ScreenAwake`, providers (`activeDelivery`, `locationPublisher`, `locationSharingState`); `SharingIndicator` con todos sus estados; `displayedCourierLocationProvider` y `routeProgressProvider(orderId, role)` (marcador propio y ETA del repartidor); `tool/emulator_drive.dart`; textos l10n; tests de los 4 archivos del paso 7.
+- **Verificación:** `./tool/check.sh` en verde (234 tests). A mano en emulador Pixel_10_Pro con `DEMO_REAL_GPS=true`: permiso revocado, *Picked up* -> hoja -> *Continue* -> diálogo del sistema -> *While using the app*; *Start delivery* + `emulator_drive.dart r2`: marcador propio sobre la ruta, ETA/distancia, "Sharing location"; *Home* y volver (el envío sigue); ubicación del emulador apagada -> aviso "Location services are off / Open location settings". No probados a mano: denegado para siempre (dos denegaciones), *Pause* en dispositivo (cubierto por tests), *Mark as delivered* con GPS real.
+- **PR:** ver historial de `main` (squash de `feat/fase-08-ubicacion-repartidor`).
+- **Decisiones:** el motor no espera el `cancel()` de la suscripción del GPS (un stream de plataforma puede tardar y bloquear el cambio de estado); `NoActiveOrderError` marca el pedido como terminado para no reintentar; la hoja de permisos se cierra una sola vez (`_closed`): sin eso, el `pop` del diálogo del sistema y el de `onResume` cerraban también la pantalla de detalle (bug encontrado en el emulador); `ensureLocationAccess` devuelve `denied` si `checkAccess` lanza, para no bloquear la acción del repartidor; la ETA del repartidor aparece en `inTransit` cuando llega su primer fix (antes muestra `courierHeadToDropoff`); `screenOverrides` de los tests ahora incluye un repositorio de dispositivo mock.
+- **Pendientes:** verificación manual del caso "denegado para siempre" y de *Mark as delivered* con GPS real (fase 13 o cuando el autor pueda).
 
 ### Fase 07 · Entregas del repartidor — 2026-09-30
 - **Hecho:** `CourierOrdersScreen` definitiva (In progress / Assigned / Completed, nombre del cliente, pull-to-refresh, carga/vacío/error, `settings-open`); `OrderActionController` (`AsyncValue.guard`); `CourierActionButton` (botón `order-action-primary`, spinner sin doble pulsación, bloqueo `courierBusy` con texto de ayuda, diálogo de confirmación `confirm-delivered`, SnackBar de errores tipados); variante courier de `TrackingPanel` (línea de contexto por estado, fila "Customer", sin "Your courier"/"Last updated"); `TrackingMap` no observa la ubicación cuando el rol es courier; textos l10n; tests de lista, controlador y detalle del repartidor.

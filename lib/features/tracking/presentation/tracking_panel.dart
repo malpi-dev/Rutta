@@ -14,8 +14,8 @@ import 'package:rutta/features/orders/presentation/orders_providers.dart';
 import 'package:rutta/features/orders/presentation/widgets/courier_action_button.dart';
 import 'package:rutta/features/orders/presentation/widgets/status_labels.dart';
 import 'package:rutta/features/orders/presentation/widgets/status_timeline.dart';
+import 'package:rutta/features/tracking/presentation/sharing_indicator.dart';
 import 'package:rutta/features/tracking/presentation/tracking_providers.dart';
-import 'package:rutta/l10n/app_localizations.dart';
 
 /// Bottom sheet content of the order detail (customer and courier variants).
 class TrackingPanel extends StatelessWidget {
@@ -55,6 +55,8 @@ class TrackingPanel extends StatelessWidget {
           ),
           OrderStatusHeadline(order: order, role: role),
           if (role == UserRole.courier) CourierActionButton(order: order),
+          if (role == UserRole.courier && order.status.isInProgress)
+            const SharingIndicator(),
           if (role == UserRole.customer && order.status.isInProgress)
             StaleLocationNotice(orderId: order.id),
           if (role == UserRole.customer && order.courierName != null) ...[
@@ -102,7 +104,7 @@ class OrderStatusHeadline extends ConsumerWidget {
       color: theme.colorScheme.onSurfaceVariant,
     );
     final contextLine = role == UserRole.courier
-        ? _courierLine(l10n, ref, muted)
+        ? _courierLine(context, ref, muted)
         : switch (order.status) {
             OrderStatus.created => Text(l10n.waitingForCourier, style: muted),
             OrderStatus.assigned => Text(
@@ -134,24 +136,37 @@ class OrderStatusHeadline extends ConsumerWidget {
     );
   }
 
-  Widget _courierLine(AppLocalizations l10n, WidgetRef ref, TextStyle? muted) =>
-      switch (order.status) {
-        OrderStatus.assigned => Text(
-          l10n.courierNextPickup(order.pickup.name ?? order.pickup.address),
-          style: muted,
-        ),
-        OrderStatus.pickedUp => Text(l10n.courierNextStart, style: muted),
-        OrderStatus.inTransit => Text(l10n.courierHeadToDropoff, style: muted),
-        OrderStatus.delivered => _deliveredLine(ref, muted),
-        OrderStatus.cancelled => Text(l10n.orderCancelled, style: muted),
-        OrderStatus.created => Text(l10n.waitingForCourier, style: muted),
-      };
-
-  Widget _progressLine(BuildContext context, WidgetRef ref, TextStyle? muted) {
+  Widget _courierLine(BuildContext context, WidgetRef ref, TextStyle? muted) {
     final l10n = context.l10n;
-    final progress = ref.watch(routeProgressProvider(order.id));
+    return switch (order.status) {
+      OrderStatus.assigned => Text(
+        l10n.courierNextPickup(order.pickup.name ?? order.pickup.address),
+        style: muted,
+      ),
+      OrderStatus.pickedUp => Text(l10n.courierNextStart, style: muted),
+      // ETA and distance appear once the courier's own GPS fix arrives.
+      OrderStatus.inTransit => _progressLine(
+        context,
+        ref,
+        muted,
+        fallback: l10n.courierHeadToDropoff,
+      ),
+      OrderStatus.delivered => _deliveredLine(ref, muted),
+      OrderStatus.cancelled => Text(l10n.orderCancelled, style: muted),
+      OrderStatus.created => Text(l10n.waitingForCourier, style: muted),
+    };
+  }
+
+  Widget _progressLine(
+    BuildContext context,
+    WidgetRef ref,
+    TextStyle? muted, {
+    String? fallback,
+  }) {
+    final l10n = context.l10n;
+    final progress = ref.watch(routeProgressProvider(order.id, role));
     if (progress == null) {
-      return Text(l10n.waitingForLocation, style: muted);
+      return Text(fallback ?? l10n.waitingForLocation, style: muted);
     }
     final figures = muted?.copyWith(
       fontFeatures: const [FontFeature.tabularFigures()],

@@ -7,7 +7,9 @@ import 'package:rutta/features/demo/data/demo_store.dart';
 import 'package:rutta/features/orders/data/mock_connection_monitor.dart';
 import 'package:rutta/features/orders/data/mock_orders_repository.dart';
 import 'package:rutta/features/orders/domain/orders_repository.dart';
+import 'package:rutta/features/tracking/data/mock_device_location_repository.dart';
 import 'package:rutta/features/tracking/data/mock_tracking_repository.dart';
+import 'package:rutta/features/tracking/domain/device_location_repository.dart';
 import 'package:rutta/features/tracking/domain/tracking_repository.dart';
 
 import 'fake_rutta_map.dart';
@@ -19,6 +21,7 @@ List<Override> screenOverrides(
   DemoStore store, {
   OrdersRepository? orders,
   TrackingRepository? tracking,
+  DeviceLocationRepository? device,
 }) => [
   clockProvider.overrideWithValue(store.clock),
   ordersRepositoryProvider.overrideWithValue(
@@ -26,6 +29,9 @@ List<Override> screenOverrides(
   ),
   trackingRepositoryProvider.overrideWithValue(
     tracking ?? MockTrackingRepository(store),
+  ),
+  deviceLocationRepositoryProvider.overrideWithValue(
+    device ?? MockDeviceLocationRepository(store),
   ),
   connectionMonitorProvider.overrideWithValue(MockConnectionMonitor()),
   ruttaMapBuilderProvider.overrideWithValue(FakeRuttaMap.new),

@@ -107,14 +107,14 @@ class _TrackingMapState extends ConsumerState<TrackingMap>
     _animation.stop();
   }
 
-  /// The location is only observed while the order is in progress and only
-  /// for the customer: the courier's own position arrives in phase 08.
+  /// The location is only observed while the order is in progress: the
+  /// customer sees the courier's published location, the courier their own
+  /// GPS fix.
   void _syncSubscription() {
-    final inProgress =
-        widget.order.status.isInProgress && widget.role == UserRole.customer;
+    final inProgress = widget.order.status.isInProgress;
     if (inProgress && _subscription == null) {
       _subscription = ref.listenManual(
-        courierLocationProvider(widget.order.id),
+        displayedCourierLocationProvider(widget.order.id, widget.role),
         (_, next) => _onLocation(next.value),
         fireImmediately: true,
       );
@@ -212,7 +212,9 @@ class _TrackingMapState extends ConsumerState<TrackingMap>
     final order = widget.order;
     final colors = context.colors;
     final l10n = context.l10n;
-    final stale = ref.watch(isCourierLocationStaleProvider(order.id));
+    final stale =
+        widget.role == UserRole.customer &&
+        ref.watch(isCourierLocationStaleProvider(order.id));
     return Stack(
       children: [
         Positioned.fill(
