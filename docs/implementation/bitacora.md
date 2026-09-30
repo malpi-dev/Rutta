@@ -5,9 +5,9 @@
 
 ## Avance
 
-`███████████▒░░` 11/14 fases terminadas (79 %)
+`████████████░░` 12/14 fases terminadas (86 %)
 
-**Fase actual:** Fase 12 · Ajustes e identidad (en progreso)
+**Fase actual:** ninguna — la siguiente es la Fase 13 · Pulido y E2E
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -26,7 +26,7 @@
 | 09 | Backend Supabase | `feat/fase-09-backend-supabase` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 10 | Auth | `feat/fase-10-auth` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 11 | Supabase y Realtime | `feat/fase-11-supabase-y-realtime` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
-| 12 | Ajustes e identidad | `feat/fase-12-ajustes-e-identidad` | 🚧 En progreso | 2026-09-30 | — |
+| 12 | Ajustes e identidad | `feat/fase-12-ajustes-e-identidad` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 13 | Pulido y E2E | `feat/fase-13-pulido-y-e2e` | ⏳ Pendiente | — | — |
 | 14 | Lanzamiento | `feat/fase-14-lanzamiento` | ⏳ Pendiente | — | — |
 
@@ -62,6 +62,13 @@ Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 > - **PR:** enlace o número.
 > - **Decisiones:** qué se decidió y por qué (también va a la tabla de abajo si cambia la definición o el plan).
 > - **Pendientes:** lo que quedó para otra fase (con el número de fase destino).
+
+### Fase 12 · Ajustes e identidad — 2026-09-30
+- **Hecho:** `external_links.dart` (`externalLinkOpenerProvider` + `ExternalLinks`; la atribución del mapa ya lo usa); `SettingsScreen` definitiva (tema System/Light/Dark persistido, cuenta live con iniciales/nombre/email/rol y confirmación de *Sign out*, demo con rol y *Exit demo*, créditos OSM/tiles/OSRM, licencias) con ids `settings-theme-*`, `settings-sign-out`, `settings-exit-demo`; SVG propios en `assets/icon/` + PNG (librsvg), ícono adaptativo y splash claro/oscuro con Android 12 (`flutter_launcher_icons`, `flutter_native_splash`), recursos generados commiteados; logo en el login; textos l10n; tests de ajustes, tema aplicado y logo.
+- **Verificación:** `./tool/check.sh` en verde (296 tests, 2 omitidos); `flutter build apk --debug` OK; en emulador (emulator-5554) splash oscuro y login claro con logo revisados por captura. No se revisó a mano: splash claro/ícono del launcher en forma redonda, pantalla de ajustes en emulador (cubierta por tests de widgets).
+- **PR:** ver historial de `main` (squash de `feat/fase-12-ajustes-e-identidad`).
+- **Decisiones:** `Info.plist` de iOS fue reformateado (solo espacios) por `flutter_native_splash`; clave l10n `cancel` ya existía (no se duplicó); el test de cierre de sesión con el repartidor comparte ubicación sustituye `screenAwakeProvider` por un fake (el wakelock real cuelga en tests) y escucha `myOrders`/`activeDelivery` como lo haría la pantalla del repartidor; en sesión no `SignedIn` en live se muestra solo *Sign out* sin confirmación.
+- **Pendientes:** verificación manual de ajustes/ícono en launcher (fase 13).
 
 ### Fase 11 · Supabase y Realtime — 2026-09-30
 - **Hecho:** `order_mapper`, `courier_location_mapper`; `RealtimeStatusHub`; `liveQuery` (fetch inicial, `postgres_changes`, debounce, relectura al (re)suscribir, limpieza de canal, nombres `rutta:<tema>:<id>:<n>`); `SupabaseOrdersRepository`, `SupabaseTrackingRepository` (posición emitida desde el payload), `SupabaseConnectionMonitor`; providers live sin `UnimplementedError` (resuelve el pendiente de la fase 10); `AppLifecycleListener` en `RuttaApp` que invalida `myOrdersProvider` al volver a primer plano en live; `tool/simulate_courier.sh` (solo local); tests de mappers, hub y banner; test de integración `orders_realtime_test.dart`.
