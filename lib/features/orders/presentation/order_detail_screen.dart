@@ -6,12 +6,11 @@ import 'package:rutta/core/presentation/async_state_view.dart';
 import 'package:rutta/core/presentation/skeleton.dart';
 import 'package:rutta/features/orders/presentation/orders_providers.dart';
 import 'package:rutta/features/orders/presentation/widgets/reconnecting_banner.dart';
+import 'package:rutta/features/tracking/presentation/location_publisher.dart';
 import 'package:rutta/features/tracking/presentation/tracking_map.dart';
 import 'package:rutta/features/tracking/presentation/tracking_panel.dart';
 
-/// One screen with a variant per role. Phase 06 implements the customer
-/// variant; the courier variant (phase 07) reuses the map, sections and
-/// timeline.
+/// One screen with a variant per role (customer / courier).
 class OrderDetailScreen extends ConsumerStatefulWidget {
   const OrderDetailScreen({
     required this.orderId,
@@ -31,6 +30,7 @@ class _OrderDetailScreenState extends ConsumerState<OrderDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.role == UserRole.courier) ref.watch(locationPublisherProvider);
     final orderValue = ref.watch(orderProvider(widget.orderId));
     return Scaffold(
       appBar: AppBar(title: Text(orderValue.value?.code ?? '')),

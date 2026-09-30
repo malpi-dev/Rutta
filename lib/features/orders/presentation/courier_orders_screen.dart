@@ -12,6 +12,7 @@ import 'package:rutta/features/orders/presentation/orders_providers.dart';
 import 'package:rutta/features/orders/presentation/widgets/order_card.dart';
 import 'package:rutta/features/orders/presentation/widgets/reconnecting_banner.dart';
 import 'package:rutta/features/orders/presentation/widgets/section_header.dart';
+import 'package:rutta/features/tracking/presentation/location_publisher.dart';
 
 /// Courier home: assigned orders, in-progress ones first, updated live.
 class CourierOrdersScreen extends ConsumerWidget {
@@ -20,6 +21,8 @@ class CourierOrdersScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
+    // Keeps location sharing alive while the courier moves between screens.
+    ref.watch(locationPublisherProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.deliveriesTitle),

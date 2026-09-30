@@ -3,6 +3,9 @@ import 'package:rutta/core/config/env.dart';
 import 'package:rutta/core/di/app_mode_provider.dart';
 import 'package:rutta/core/domain/app_mode.dart';
 import 'package:rutta/core/domain/clock.dart';
+import 'package:rutta/core/domain/user_role.dart';
+import 'package:rutta/features/auth/domain/session_state.dart';
+import 'package:rutta/features/auth/presentation/session_providers.dart';
 import 'package:rutta/features/demo/data/demo_store.dart';
 import 'package:rutta/features/orders/data/mock_connection_monitor.dart';
 import 'package:rutta/features/orders/data/mock_orders_repository.dart';
@@ -11,6 +14,7 @@ import 'package:rutta/features/orders/domain/connection_monitor.dart';
 import 'package:rutta/features/orders/domain/orders_repository.dart';
 import 'package:rutta/features/settings/data/prefs_settings_repository.dart';
 import 'package:rutta/features/settings/domain/settings_repository.dart';
+import 'package:rutta/features/tracking/data/geolocator_device_location_repository.dart';
 import 'package:rutta/features/tracking/data/mock_device_location_repository.dart';
 import 'package:rutta/features/tracking/data/mock_tracking_repository.dart';
 import 'package:rutta/features/tracking/domain/compute_route_progress.dart';
@@ -80,12 +84,33 @@ ConnectionMonitor connectionMonitor(Ref ref) =>
 @Riverpod(keepAlive: true)
 DeviceLocationRepository deviceLocationRepository(Ref ref) =>
     switch (ref.watch(appModeControllerProvider)) {
-      AppModeLive() => throw UnimplementedError(
-        'GeolocatorDeviceLocationRepository arrives in phase 08',
-      ),
-      AppModeDemo() => MockDeviceLocationRepository(
+      AppModeDemo() when !Env.demoUsesRealGps => MockDeviceLocationRepository(
         ref.watch(demoStoreProvider),
       ),
+      _ => const GeolocatorDeviceLocationRepository(),
+    };
+
+/// Id of the signed-in user (demo: the demo user). null without a session.
+@Riverpod(keepAlive: true)
+String? currentUserId(Ref ref) => switch (ref.watch(
+  appModeControllerProvider,
+)) {
+  AppModeDemo() => ref.watch(demoStoreProvider).currentUserId,
+  AppModeLive() => switch (ref.watch(sessionStateProvider).value) {
+    SessionSignedIn(:final profile) => profile.id,
+    _ => null,
+  },
+};
+
+/// Role of the signed-in user. null without a session.
+@Riverpod(keepAlive: true)
+UserRole? currentRole(Ref ref) =>
+    switch (ref.watch(appModeControllerProvider)) {
+      AppModeDemo(:final role) => role,
+      AppModeLive() => switch (ref.watch(sessionStateProvider).value) {
+        SessionSignedIn(:final profile) => profile.role,
+        _ => null,
+      },
     };
 
 @Riverpod(keepAlive: true)

@@ -22,6 +22,10 @@ abstract final class Env {
     defaultValue: '10',
   );
 
+  /// Development only: the demo courier uses the real device GPS
+  /// (`--dart-define=DEMO_REAL_GPS=true`) to try permissions and throttling.
+  static const demoUsesRealGps = bool.fromEnvironment('DEMO_REAL_GPS');
+
   /// Without both values the app runs in demo-only mode.
   static bool get isBackendConfigured =>
       supabaseUrl.isNotEmpty && supabasePublishableKey.isNotEmpty;

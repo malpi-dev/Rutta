@@ -4,6 +4,7 @@ import 'package:rutta/core/di/repository_providers.dart';
 import 'package:rutta/core/domain/user_role.dart';
 import 'package:rutta/core/presentation/l10n_extension.dart';
 import 'package:rutta/core/presentation/root_scaffold_messenger.dart';
+import 'package:rutta/features/location_permission/presentation/location_permission_sheet.dart';
 import 'package:rutta/features/orders/domain/available_order_actions.dart';
 import 'package:rutta/features/orders/domain/order.dart';
 import 'package:rutta/features/orders/presentation/order_action_controller.dart';
@@ -87,6 +88,11 @@ class CourierActionButton extends ConsumerWidget {
         builder: (context) => _ConfirmDeliveredDialog(code: order.code),
       );
       if (confirmed != true) return;
+    }
+    if (action == OrderAction.pickUp || action == OrderAction.startDelivery) {
+      // Explains and requests location before sharing starts. The action runs
+      // regardless of the answer: the courier can work without sharing (F9).
+      if (context.mounted) await ensureLocationAccess(context, ref);
     }
     await controller.run(action);
   }
