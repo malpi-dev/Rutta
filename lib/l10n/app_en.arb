@@ -34,7 +34,6 @@
   "pickupPinLabel": "Pickup",
   "dropoffPinLabel": "Drop-off",
   "courierPinLabel": "Courier",
-  "devMapPreview": "Map preview",
   "exploreDemo": "Explore demo",
   "exitDemo": "Exit demo",
   "demoBannerMessage": "Demo mode — sample data",
@@ -44,5 +43,45 @@
   "demoAsCustomerHint": "Follow a courier live on the map",
   "demoAsCourier": "Explore as courier",
   "demoAsCourierHint": "Deliver an order step by step",
-  "ordersEmptyTitle": "No orders yet"
+  "ordersEmptyTitle": "No orders yet",
+  "myOrdersTitle": "My orders",
+  "noOrdersLiveHint": "Orders placed for you will appear here. Want to look around? Sign out and tap Explore demo.",
+  "noOrdersDemoHint": "Nothing here yet.",
+  "activeSection": "Active",
+  "historySection": "History",
+  "statusCreated": "Placed",
+  "statusAssigned": "Courier assigned",
+  "statusPickedUp": "Picked up",
+  "statusInTransit": "In transit",
+  "statusDelivered": "Delivered",
+  "statusCancelled": "Cancelled",
+  "reconnecting": "Reconnecting…",
+  "waitingForCourier": "Waiting for a courier",
+  "trackingStartsOnPickup": "Tracking starts when the courier picks up your order",
+  "waitingForLocation": "Waiting for the courier's location…",
+  "distanceLeft": "{distance} left",
+  "@distanceLeft": {
+    "placeholders": {
+      "distance": {"type": "String"}
+    }
+  },
+  "deliveredAt": "Delivered at {time}",
+  "@deliveredAt": {
+    "placeholders": {
+      "time": {"type": "String"}
+    }
+  },
+  "orderCancelled": "This order was cancelled",
+  "lastUpdatedAgo": "Last updated {ago}",
+  "@lastUpdatedAgo": {
+    "placeholders": {
+      "ago": {"type": "String"}
+    }
+  },
+  "courierLabel": "Your courier",
+  "dropoffLabel": "Drop-off",
+  "itemsTitle": "Items",
+  "totalLabel": "Total",
+  "timelineTitle": "Status",
+  "recenterOnCourier": "Center on courier"
 }

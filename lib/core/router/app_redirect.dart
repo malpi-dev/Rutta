@@ -10,9 +10,6 @@ String? appRedirect({
   required AppMode mode,
   required AsyncValue<SessionState> session,
 }) {
-  // Debug-only route (only registered when kDebugMode): never redirect it.
-  if (location == Routes.devMap) return null;
-
   const entry = {
     Routes.startup,
     Routes.login,
