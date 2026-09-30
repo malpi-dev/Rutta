@@ -47,6 +47,7 @@ flutter:
   assets:
     - assets/fonts/OFL-Manrope.txt
     - assets/fonts/OFL-Inter.txt
+    - assets/icon/splash_logo.png
   fonts:
     - family: Manrope
       fonts:
@@ -58,3 +59,22 @@ flutter:
         - { asset: assets/fonts/Inter-400.ttf, weight: 400 }
         - { asset: assets/fonts/Inter-500.ttf, weight: 500 }
         - { asset: assets/fonts/Inter-600.ttf, weight: 600 }
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/icon/icon.png
+  adaptive_icon_background: "#FF5A1F"
+  adaptive_icon_foreground: assets/icon/icon_foreground.png
+  remove_alpha_ios: true
+
+flutter_native_splash:
+  color: "#FF5A1F"
+  image: assets/icon/splash_logo.png
+  color_dark: "#0F141A"
+  image_dark: assets/icon/splash_logo.png
+  android_12:
+    color: "#FF5A1F"
+    image: assets/icon/splash_android12.png
+    color_dark: "#0F141A"
+    image_dark: assets/icon/splash_android12.png
