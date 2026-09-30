@@ -5,9 +5,9 @@
 
 ## Avance
 
-`██████████░░░░` 10/14 fases terminadas (71 %)
+`███████████░░░` 11/14 fases terminadas (79 %)
 
-**Fase actual:** ninguna — la siguiente es la Fase 11 · Supabase y Realtime
+**Fase actual:** ninguna — la siguiente es la Fase 12 · Ajustes e identidad
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -25,7 +25,7 @@
 | 08 | Ubicación del repartidor | `feat/fase-08-ubicacion-repartidor` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 09 | Backend Supabase | `feat/fase-09-backend-supabase` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 10 | Auth | `feat/fase-10-auth` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
-| 11 | Supabase y Realtime | `feat/fase-11-supabase-y-realtime` | ⏳ Pendiente | — | — |
+| 11 | Supabase y Realtime | `feat/fase-11-supabase-y-realtime` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 12 | Ajustes e identidad | `feat/fase-12-ajustes-e-identidad` | ⏳ Pendiente | — | — |
 | 13 | Pulido y E2E | `feat/fase-13-pulido-y-e2e` | ⏳ Pendiente | — | — |
 | 14 | Lanzamiento | `feat/fase-14-lanzamiento` | ⏳ Pendiente | — | — |
@@ -62,6 +62,13 @@ Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 > - **PR:** enlace o número.
 > - **Decisiones:** qué se decidió y por qué (también va a la tabla de abajo si cambia la definición o el plan).
 > - **Pendientes:** lo que quedó para otra fase (con el número de fase destino).
+
+### Fase 11 · Supabase y Realtime — 2026-09-30
+- **Hecho:** `order_mapper`, `courier_location_mapper`; `RealtimeStatusHub`; `liveQuery` (fetch inicial, `postgres_changes`, debounce, relectura al (re)suscribir, limpieza de canal, nombres `rutta:<tema>:<id>:<n>`); `SupabaseOrdersRepository`, `SupabaseTrackingRepository` (posición emitida desde el payload), `SupabaseConnectionMonitor`; providers live sin `UnimplementedError` (resuelve el pendiente de la fase 10); `AppLifecycleListener` en `RuttaApp` que invalida `myOrdersProvider` al volver a primer plano en live; `tool/simulate_courier.sh` (solo local); tests de mappers, hub y banner; test de integración `orders_realtime_test.dart`.
+- **Verificación:** `./tool/check.sh` en verde (288 tests, 2 omitidos: integraciones); `supabase db reset` + `supabase test db` (54) en verde. Integración en verde: `RUTTA_IT=1 RUTTA_PUBLISHABLE_KEY=<key> flutter test -j 1 --tags supabase test/integration/` (los dos archivos usan Mailpit: ejecutar con `-j 1`; hacer `db reset` antes). Cubre 8 pedidos del cliente, pedidos del repartidor, ubicación en <5 s, `CourierBusyError`, `NoActiveOrderError`, `NotAssignedToYouError`, `delivered` + evento nuevo. En vivo en emulador Pixel (emulator-5554, un solo emulador): login OTP real como `customer@rutta.test`, lista de 8 pedidos, detalle RT-1042 con `simulate_courier.sh` (marcador, ETA y distancia se actualizan), modo avión 25 s -> "Reconnecting…" y desaparece al volver, `update ... delivered` por psql -> el detalle pasa a *Delivered* sin refrescar.
+- **PR:** ver historial de `main` (squash de `feat/fase-11-supabase-y-realtime`).
+- **Decisiones:** `GeoPoint` es posicional (`GeoPoint(lat, lng)`), no con nombres como en la fase; `bind` de `liveQuery` recibe también `emit` para emitir desde el payload; tras el primer valor, un fallo de relectura se ignora (el hub ya avisa y la resuscripción relee); **`order('created_at')` de supabase_flutter 2.18 es descendente por defecto**: se pasa `ascending: true` en los eventos (detectado por la integración); `RuttaApp` pasó a `ConsumerStatefulWidget`.
+- **Pendientes:** no se probó el lado del repartidor en emulador ni dos emuladores simultáneos (cubierto por la integración con dos clientes): paso 10.3/10.4/10.6 manual para el autor o la fase 13. Si `supabase start` lleva mucho tiempo, el montaje de la plantilla OTP en Kong puede quedar obsoleto tras cambios de ficheros en git (el correo llega sin código): `supabase stop && supabase start`.
 
 ### Fase 10 · Auth — 2026-09-30
 - **Hecho:** dependencia directa `http`; `supabaseClientProvider` y `backendConfiguredProvider`; `Supabase.initialize` solo con `.env.json` (en `main()`, con `try/catch` y `debugPrint`); `mapSupabaseError` + `guardSupabase` (prefijos `RUTTA_*` antes que códigos); `SupabaseAuthRepository` (OTP, sesión con perfil y contador de secuencia, `ensure_profile`, sign out) y `MockAuthRepository`; `profile_mapper`; `sessionStateProvider` real; `LoginScreen` (con/sin backend), `VerifyCodeScreen` (autoenvío a 6 dígitos, reenvío tras 60 s, ayuda de Mailpit en debug local), `OnboardingScreen`; controladores `SendCode/VerifyCode/Onboarding` con `AsyncValue.guard`; `SettingsScreen` provisional con *Sign out* / *Exit demo*; textos l10n; `dart_test.yaml` con el tag `supabase`.
