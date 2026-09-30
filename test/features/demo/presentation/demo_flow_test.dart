@@ -26,6 +26,10 @@ void main() {
   }
 
   testWidgets('explore as customer, then exit demo', (tester) async {
+    // Tall screen so every order card is built.
+    tester.view.physicalSize = const Size(800, 1600);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
     await pumpRutta(tester);
     expect(find.byKey(const Key('demo-banner')), findsNothing);
 

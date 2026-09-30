@@ -13,9 +13,6 @@ abstract final class Routes {
   static String courierOrder(String id) => '/courier/orders/$id';
   static const settings = '/settings';
 
-  /// Debug-only map preview (removed in phase 06).
-  static const devMap = '/dev/map';
-
   static String homeFor(UserRole role) => switch (role) {
     UserRole.customer => customerOrders,
     UserRole.courier => courierOrders,

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -11,12 +10,10 @@ import 'package:rutta/features/auth/presentation/login_screen.dart';
 import 'package:rutta/features/auth/presentation/onboarding_screen.dart';
 import 'package:rutta/features/auth/presentation/session_providers.dart';
 import 'package:rutta/features/auth/presentation/verify_code_screen.dart';
-import 'package:rutta/features/orders/data/demo_routes.dart';
 import 'package:rutta/features/orders/presentation/courier_orders_screen.dart';
 import 'package:rutta/features/orders/presentation/customer_orders_screen.dart';
 import 'package:rutta/features/orders/presentation/order_detail_screen.dart';
 import 'package:rutta/features/settings/presentation/settings_screen.dart';
-import 'package:rutta/features/tracking/presentation/dev_map_preview_screen.dart';
 
 part 'app_router.g.dart';
 
@@ -83,18 +80,6 @@ GoRouter appRouter(Ref ref) {
         path: Routes.settings,
         builder: (_, _) => const SettingsScreen(),
       ),
-      if (kDebugMode)
-        GoRoute(
-          path: Routes.devMap,
-          builder: (_, _) {
-            final route = demoRoutes['r1']!;
-            return DevMapPreviewScreen(
-              route: route.points,
-              pickup: route.pickup,
-              dropoff: route.dropoff,
-            );
-          },
-        ),
     ],
   );
   ref.onDispose(router.dispose);

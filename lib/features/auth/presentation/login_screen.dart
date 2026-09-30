@@ -1,10 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:rutta/core/presentation/empty_state.dart';
 import 'package:rutta/core/presentation/l10n_extension.dart';
-import 'package:rutta/core/router/routes.dart';
 import 'package:rutta/features/demo/presentation/demo_role_picker_sheet.dart';
 
 class LoginScreen extends ConsumerWidget {
@@ -28,12 +25,6 @@ class LoginScreen extends ConsumerWidget {
               child: Text(l10n.exploreDemo),
             ),
           ),
-          if (kDebugMode)
-            TextButton(
-              key: const Key('dev-map-preview'),
-              onPressed: () => context.push(Routes.devMap),
-              child: Text(l10n.devMapPreview),
-            ),
         ],
       ),
     );
