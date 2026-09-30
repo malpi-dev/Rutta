@@ -5,9 +5,9 @@
 
 ## Avance
 
-`█░░░░░░░░░░░░░` 1/14 fases terminadas (7 %)
+`██░░░░░░░░░░░░` 2/14 fases terminadas (14 %)
 
-**Fase actual:** ninguna — la siguiente es la Fase 02 · Core
+**Fase actual:** ninguna — la siguiente es la Fase 03 · Dominio
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -16,7 +16,7 @@
 | # | Fase | Rama | Estado | Inicio | Fin |
 |---|---|---|---|---|---|
 | 01 | Andamiaje | `feat/fase-01-andamiaje` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
-| 02 | Core | `feat/fase-02-core` | ⏳ Pendiente | — | — |
+| 02 | Core | `feat/fase-02-core` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 03 | Dominio | `feat/fase-03-dominio` | ⏳ Pendiente | — | — |
 | 04 | Mapa y rutas | `feat/fase-04-mapa-y-rutas` | ⏳ Pendiente | — | — |
 | 05 | Modo demo | `feat/fase-05-modo-demo` | ⏳ Pendiente | — | — |
@@ -62,6 +62,13 @@ Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 > - **PR:** enlace o número.
 > - **Decisiones:** qué se decidió y por qué (también va a la tabla de abajo si cambia la definición o el plan).
 > - **Pendientes:** lo que quedó para otra fase (con el número de fase destino).
+
+### Fase 02 · Core — 2026-09-30
+- **Hecho:** `Clock`/`SystemClock`/`FixedClock`, `UserRole`, `AppMode`; `DomainError` sellado; `Env`; tema claro/oscuro (`AppColors`, `RuttaColors`, `AppTheme`) con Manrope + Inter (copiadas de Centavo) y licencias registradas; `ThemePreference` + `SettingsRepository` (`prefs_` e `in_memory_`) + `ThemeController`; providers base (`clock`, `sharedPreferences`, `settingsRepository`, `AppModeController`, `noAutomaticRetry`); `UserProfile`, `SessionState` y `sessionStateProvider` provisional; l10n (errores, validación, comunes); `errorMessage` exhaustivo; formatters; widgets comunes (`AsyncStateView`, `EmptyState`, `ErrorState`, `SkeletonList`, `rootScaffoldMessengerKey`); router con `appRedirect` puro, `StartupScreen` y pantallas provisionales; `app.dart`/`main.dart`; helpers y tests.
+- **Verificación:** `./tool/check.sh` en verde (37 tests: dominio, formatters, mensajes de error, 16 casos de redirect, prefs, `AsyncStateView`, smoke). No se probó a mano en emulador (modo oscuro cubierto solo por el tema en tests).
+- **PR:** ver historial de `main` (squash de `feat/fase-02-core`).
+- **Decisiones:** `formatMoneyCents` usa `NumberFormat.currency(symbol: r'MX$')` porque `simpleCurrency(name: 'MXN')` en `en_US` da `$245.00`, no `MX$245.00`; `formatTime` reemplaza el espacio estrecho (U+202F) que ICU pone antes de AM/PM por un espacio normal; `SkeletonList` recibe `itemCount`/`itemHeight` (3 y 96 por defecto) según la fase; los tipos `Override` vienen de `flutter_riverpod/misc.dart`.
+- **Pendientes:** verificación manual del modo oscuro en emulador (paso 15) queda para la fase 13 (pulido).
 
 ### Fase 01 · Andamiaje — 2026-09-30
 - **Hecho:** `flutter create` (com.malpidev.rutta, android+ios), dependencias, lints VGA, build.yaml, l10n, permisos Android (INTERNET, FINE/COARSE; cleartext solo en debug) e iOS, estructura de carpetas, `.env.example(.json)`, `.gitignore`, `tool/check.sh` y `check_architecture.sh`, app mínima + test de humo, `CLAUDE.md` y `README.md`, CI.
