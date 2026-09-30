@@ -5,9 +5,9 @@
 
 ## Avance
 
-`██░░░░░░░░░░░░` 2/14 fases terminadas (14 %)
+`███░░░░░░░░░░░` 3/14 fases terminadas (21 %)
 
-**Fase actual:** ninguna — la siguiente es la Fase 03 · Dominio
+**Fase actual:** ninguna — la siguiente es la Fase 04 · Mapa y rutas
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -17,7 +17,7 @@
 |---|---|---|---|---|---|
 | 01 | Andamiaje | `feat/fase-01-andamiaje` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 02 | Core | `feat/fase-02-core` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
-| 03 | Dominio | `feat/fase-03-dominio` | ⏳ Pendiente | — | — |
+| 03 | Dominio | `feat/fase-03-dominio` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 04 | Mapa y rutas | `feat/fase-04-mapa-y-rutas` | ⏳ Pendiente | — | — |
 | 05 | Modo demo | `feat/fase-05-modo-demo` | ⏳ Pendiente | — | — |
 | 06 | Seguimiento del cliente | `feat/fase-06-seguimiento-cliente` | ⏳ Pendiente | — | — |
@@ -62,6 +62,13 @@ Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 > - **PR:** enlace o número.
 > - **Decisiones:** qué se decidió y por qué (también va a la tabla de abajo si cambia la definición o el plan).
 > - **Pendientes:** lo que quedó para otra fase (con el número de fase destino).
+
+### Fase 03 · Dominio — 2026-09-30
+- **Hecho:** `GeoPoint` y `geo.dart` (haversine, rumbo, longitud, `projectOntoRoute`, `pointAlongRoute`, `splitRoute`); `OrderStatus` con tabla de transiciones; entidades freezed `Place`, `OrderItem`, `Order`, `OrderStatusEvent`, `CourierLocation`, `DevicePosition`, `RouteProgress` (+ `LocationAccess`); puertos `OrdersRepository`, `ConnectionMonitor`, `TrackingRepository`, `DeviceLocationRepository`, `AuthRepository`; casos de uso `AvailableOrderActions`, `ComputeRouteProgress`, `ShouldSendLocation`; `buildOrderTimeline`; validadores de auth; `test/helpers/builders.dart`.
+- **Verificación:** `./tool/check.sh` en verde (chequeo de arquitectura, analyze sin issues, 129 tests incluyendo las 36 combinaciones de transiciones).
+- **PR:** ver historial de `main` (squash de `feat/fase-03-dominio`).
+- **Decisiones:** `pointAlongRoute` también lanza `ArgumentError` con menos de 2 puntos (igual que `projectOntoRoute`); `remainingMeters` se redondea a 0 con `max` y se convierte a `double`; en `_happyPath` se anotó el tipo por el lint `specify_nonobvious_property_types`. Sin desviaciones del plan.
+- **Pendientes:** ninguno.
 
 ### Fase 02 · Core — 2026-09-30
 - **Hecho:** `Clock`/`SystemClock`/`FixedClock`, `UserRole`, `AppMode`; `DomainError` sellado; `Env`; tema claro/oscuro (`AppColors`, `RuttaColors`, `AppTheme`) con Manrope + Inter (copiadas de Centavo) y licencias registradas; `ThemePreference` + `SettingsRepository` (`prefs_` e `in_memory_`) + `ThemeController`; providers base (`clock`, `sharedPreferences`, `settingsRepository`, `AppModeController`, `noAutomaticRetry`); `UserProfile`, `SessionState` y `sessionStateProvider` provisional; l10n (errores, validación, comunes); `errorMessage` exhaustivo; formatters; widgets comunes (`AsyncStateView`, `EmptyState`, `ErrorState`, `SkeletonList`, `rootScaffoldMessengerKey`); router con `appRedirect` puro, `StartupScreen` y pantallas provisionales; `app.dart`/`main.dart`; helpers y tests.
