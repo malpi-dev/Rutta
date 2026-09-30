@@ -73,6 +73,8 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('settings-sign-out')));
     await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('settings-sign-out-confirm')));
+    await tester.pumpAndSettle();
     expect(find.byKey(const Key('login-email')), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
   });

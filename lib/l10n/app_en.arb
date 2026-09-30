@@ -167,5 +167,25 @@
   "onboardingSubtitle": "Couriers see it when they bring your order.",
   "nameLabel": "Full name",
   "useDifferentAccount": "Use a different account",
-  "signOut": "Sign out"
+  "signOut": "Sign out",
+  "appearanceSection": "Appearance",
+  "themeSystem": "System",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "accountSection": "Account",
+  "roleCustomer": "Customer",
+  "roleCourier": "Courier",
+  "signOutConfirm": "Sign out of Rutta?",
+  "demoExploringAs": "Exploring the demo as {role}",
+  "@demoExploringAs": {
+    "placeholders": {
+      "role": { "type": "String" }
+    }
+  },
+  "creditsSection": "Map & routes",
+  "creditsOsm": "Map data © OpenStreetMap contributors",
+  "creditsTiles": "Map tiles follow the OSM tile usage policy",
+  "creditsOsrm": "Routes computed with OSRM",
+  "aboutSection": "About",
+  "licenses": "Open-source licenses"
 }

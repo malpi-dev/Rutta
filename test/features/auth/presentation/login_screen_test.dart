@@ -85,4 +85,17 @@ void main() {
     expect(find.byKey(const Key('login-send-code')), findsNothing);
     expect(find.byKey(const Key('login-explore-demo')), findsOneWidget);
   });
+
+  testWidgets('shows the Rutta logo', (tester) async {
+    await pumpApp(
+      tester,
+      const LoginScreen(),
+      overrides: authOverrides(MockAuthRepository(), backend: false),
+    );
+    final logo = tester.widgetList<Image>(find.byType(Image)).single;
+    expect(
+      (logo.image as AssetImage).assetName,
+      'assets/icon/splash_logo.png',
+    );
+  });
 }

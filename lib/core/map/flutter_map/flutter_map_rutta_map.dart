@@ -1,13 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:rutta/core/config/env.dart';
 import 'package:rutta/core/domain/geo_point.dart';
 import 'package:rutta/core/map/flutter_map/lat_lng_mapper.dart';
 import 'package:rutta/core/map/rutta_map.dart';
+import 'package:rutta/core/presentation/external_links.dart';
 import 'package:rutta/core/presentation/l10n_extension.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 /// [RuttaMap] implementation on top of `flutter_map` + OpenStreetMap tiles.
 class FlutterMapRuttaMap extends StatefulWidget {
@@ -149,15 +152,19 @@ class _FlutterMapRuttaMapState extends State<FlutterMapRuttaMap>
                   ),
               ],
             ),
-            RichAttributionWidget(
-              attributions: [
-                TextSourceAttribution(
-                  context.l10n.mapAttributionOsm,
-                  onTap: () => launchUrl(
-                    Uri.parse('https://www.openstreetmap.org/copyright'),
+            Consumer(
+              builder: (context, ref, _) => RichAttributionWidget(
+                attributions: [
+                  TextSourceAttribution(
+                    context.l10n.mapAttributionOsm,
+                    onTap: () => unawaited(
+                      ref.read(externalLinkOpenerProvider)(
+                        ExternalLinks.osmCopyright,
+                      ),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
