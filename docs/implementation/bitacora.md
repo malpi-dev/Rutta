@@ -5,10 +5,10 @@
 
 ## Avance
 
-`█████████████░` 13/14 fases terminadas (93 %)
+`█████████████▒` 13/14 fases terminadas (93 %)
 
-**Fase actual:** ninguna — la siguiente es la Fase 14 · Lanzamiento
-**Última actualización:** 2026-09-30
+**Fase actual:** Fase 14 · Lanzamiento (🚧 en progreso)
+**Última actualización:** 2026-09-30 (fase 14 parcial)
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
 ## Estado por fase
@@ -28,7 +28,7 @@
 | 11 | Supabase y Realtime | `feat/fase-11-supabase-y-realtime` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 12 | Ajustes e identidad | `feat/fase-12-ajustes-e-identidad` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 13 | Pulido y E2E | `feat/fase-13-pulido-y-e2e` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
-| 14 | Lanzamiento | `feat/fase-14-lanzamiento` | ⏳ Pendiente | — | — |
+| 14 | Lanzamiento | `feat/fase-14-lanzamiento` | 🚧 En progreso | 2026-09-30 | — |
 
 Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 
@@ -62,6 +62,13 @@ Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 > - **PR:** enlace o número.
 > - **Decisiones:** qué se decidió y por qué (también va a la tabla de abajo si cambia la definición o el plan).
 > - **Pendientes:** lo que quedó para otra fase (con el número de fase destino).
+
+### Fase 14 · Lanzamiento — 2026-09-30 (PARCIAL: trabajo local mergeado, faltan las acciones del autor)
+- **Hecho (local):** `tool/get_otp.sh` (generate_link con `apikey`; crea el usuario si no existe y reintenta; solo imprime el código; valida prefijo `sb_secret_`; sin probar contra remoto: necesita la secret key); firma de release en `android/app/build.gradle.kts` (usa `android/key.properties` si existe, si no la clave debug); `.github/workflows/release.yaml` (tags `v*`, `.env.json` con `jq`, `key.properties` desde secretos, `rutta-<tag>.apk`, pre-release si el tag lleva `-`; sin paso de sqlite); `version: 1.0.0+1`; README completo según la plantilla; capturas `docs/media/{customer-list,tracking-light,tracking-dark,courier}.png` (APK release en emulador, demo, vía Maestro `takeScreenshot`; la del repartidor quedó en modo oscuro).
+- **Verificación:** `./tool/check.sh` en verde (347 tests, 2 omitidos). `flutter build apk --release` sin `key.properties`: `apksigner` muestra "Android Debug" (respaldo); con un keystore descartable en `key.properties` (ignorado por git, borrado después): firmado con ese certificado. APK instalado en emulator-5554.
+- **Sin hacer (🙋 del autor o bloqueado):** migración y verificación en remoto (necesita `SUPABASE_DB_URL`); exponer `rutta`; cuentas de prueba y pedidos de muestra; prueba en vivo en remoto con dos dispositivos; keystore y secretos de GitHub; prueba del workflow con `v1.0.0-rc.1` (falla sin los secretos); GIF split-screen (`ffmpeg` no está instalado y hacen falta dos emuladores; el README tiene un TODO en su lugar); licencia MIT (pendiente de confirmación, no se creó `LICENSE`); tag `v1.0.0`, repo público y estado del portafolio.
+- **Checklist §16 (evidencia parcial):** modo demo sin backend y en modo avión (fase 05/13, Maestro 2 flujos); estados de UI, oscuro con mapa, atribución OSM, ícono y splash (fases 12-13, tests y capturas); analyzer limpio y tests (`check.sh`); README completo (este PR); RLS en local (pgTAP 54). Pendientes: F1-F10 y tracking en vivo en remoto, RLS manual en remoto, CI verde del release, tabla del portafolio.
+- **Decisiones:** la fase queda 🚧 y `definicion.md` sigue en su estado actual (no se marca ✅ MVP listo hasta cumplir los criterios); no se toca el `CLAUDE.md` del portafolio todavía; las capturas se redujeron a 540 px de ancho para pesar poco.
 
 ### Fase 13 · Pulido y E2E — 2026-09-30
 - **Hecho:** `test/app/screens_smoke_test.dart` (claro/oscuro × 360x640 y 411x891 × texto 1.0/1.3: login, selector demo, listas, detalles en curso/asignado/entregado/cancelado, ajustes, verify, onboarding y las 3 hojas de permisos); `accessibility_test.dart` (tap targets y contraste); `ui_states_test.dart` (huecos de la auditoría: startup carga/error, skeleton del detalle, pedido `created`, detalle inexistente del repartidor, banner "Reconnecting" en listas y detalle); `.maestro/customer_demo_tracking.yaml` y `courier_demo_delivery.yaml`; `tool/e2e.sh`.
@@ -186,7 +193,7 @@ Estados: ⏳ Pendiente · 🚧 En progreso · ✅ Terminada · ⛔ Bloqueada
 
 ## Bloqueos
 
-_Ninguno._
+Fase 14: bloqueada por acciones 🙋 del autor (credenciales de Supabase remoto, keystore y secretos de GitHub, segundo dispositivo, confirmación de licencia y visibilidad del repo). Ver la entrada de la Fase 14.
 
 ## Ideas para el roadmap (fuera del MVP)
 
