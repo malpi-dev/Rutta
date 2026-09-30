@@ -5,9 +5,9 @@
 
 ## Avance
 
-`█████░░░░░░░░░` 5/14 fases terminadas (36 %)
+`█████▒░░░░░░░░` 5/14 fases terminadas (36 %)
 
-**Fase actual:** ninguna — la siguiente es la Fase 06 · Seguimiento del cliente
+**Fase actual:** Fase 06 · Seguimiento del cliente (🚧 en progreso)
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -20,7 +20,7 @@
 | 03 | Dominio | `feat/fase-03-dominio` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 04 | Mapa y rutas | `feat/fase-04-mapa-y-rutas` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 05 | Modo demo | `feat/fase-05-modo-demo` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
-| 06 | Seguimiento del cliente | `feat/fase-06-seguimiento-cliente` | ⏳ Pendiente | — | — |
+| 06 | Seguimiento del cliente | `feat/fase-06-seguimiento-cliente` | 🚧 En progreso | 2026-09-30 | — |
 | 07 | Entregas del repartidor | `feat/fase-07-entregas-repartidor` | ⏳ Pendiente | — | — |
 | 08 | Ubicación del repartidor | `feat/fase-08-ubicacion-repartidor` | ⏳ Pendiente | — | — |
 | 09 | Backend Supabase | `feat/fase-09-backend-supabase` | ⏳ Pendiente | — | — |
