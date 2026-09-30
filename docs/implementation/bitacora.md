@@ -5,9 +5,9 @@
 
 ## Avance
 
-`███████░░░░░░░` 7/14 fases terminadas (50 %)
+`███████▒░░░░░░` 7/14 fases terminadas (50 %)
 
-**Fase actual:** ninguna — la siguiente es la Fase 08 · Ubicación del repartidor
+**Fase actual:** Fase 08 · Ubicación del repartidor (en progreso)
 **Última actualización:** 2026-09-30
 **Ventana planificada:** semana 2 (5 – 11 oct 2026), en paralelo con Vitrina; MVP listo antes del 11 oct.
 
@@ -22,7 +22,7 @@
 | 05 | Modo demo | `feat/fase-05-modo-demo` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 06 | Seguimiento del cliente | `feat/fase-06-seguimiento-cliente` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
 | 07 | Entregas del repartidor | `feat/fase-07-entregas-repartidor` | ✅ Terminada | 2026-09-30 | 2026-09-30 |
-| 08 | Ubicación del repartidor | `feat/fase-08-ubicacion-repartidor` | ⏳ Pendiente | — | — |
+| 08 | Ubicación del repartidor | `feat/fase-08-ubicacion-repartidor` | 🚧 En progreso | 2026-09-30 | — |
 | 09 | Backend Supabase | `feat/fase-09-backend-supabase` | ⏳ Pendiente | — | — |
 | 10 | Auth | `feat/fase-10-auth` | ⏳ Pendiente | — | — |
 | 11 | Supabase y Realtime | `feat/fase-11-supabase-y-realtime` | ⏳ Pendiente | — | — |
